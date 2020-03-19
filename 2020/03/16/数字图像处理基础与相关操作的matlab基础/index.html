@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="数字图像处理基础与相关操作的matlab基础一 数字图像基础人眼中的光感受器及特点人眼中有两类光感受器：锥状体和杆状体  锥状体：每只眼睛中，锥状体的数量在600～700万之间，主要位于视网膜的中间部分，称之为中央凹，对颜色高度敏感；这些锥状体可以帮助充分地分辨图像的细节，每个锥状体都连接到各自的神经末梢。当肌肉控制眼球转动时，知道感兴趣的物体图像落在中央凹上。锥状体视觉称为白昼视觉或亮视觉。 杆">
+<meta name="keywords" content="数字图像处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字图像处理基础与相关操作的matlab基础">
+<meta property="og:url" content="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/index.html">
+<meta property="og:site_name" content="DongXuehui&#39;s Blog">
+<meta property="og:description" content="数字图像处理基础与相关操作的matlab基础一 数字图像基础人眼中的光感受器及特点人眼中有两类光感受器：锥状体和杆状体  锥状体：每只眼睛中，锥状体的数量在600～700万之间，主要位于视网膜的中间部分，称之为中央凹，对颜色高度敏感；这些锥状体可以帮助充分地分辨图像的细节，每个锥状体都连接到各自的神经末梢。当肌肉控制眼球转动时，知道感兴趣的物体图像落在中央凹上。锥状体视觉称为白昼视觉或亮视觉。 杆">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/1.png">
+<meta property="og:image" content="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/2.png">
+<meta property="og:image" content="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/3.png">
+<meta property="og:image" content="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/4.png">
+<meta property="og:image" content="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/5.png">
+<meta property="og:image" content="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/6.png">
+<meta property="og:image" content="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/7.png">
+<meta property="og:image" content="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/8.png">
+<meta property="og:image" content="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/9.png">
+<meta property="og:updated_time" content="2020-03-17T13:54:45.394Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数字图像处理基础与相关操作的matlab基础">
+<meta name="twitter:description" content="数字图像处理基础与相关操作的matlab基础一 数字图像基础人眼中的光感受器及特点人眼中有两类光感受器：锥状体和杆状体  锥状体：每只眼睛中，锥状体的数量在600～700万之间，主要位于视网膜的中间部分，称之为中央凹，对颜色高度敏感；这些锥状体可以帮助充分地分辨图像的细节，每个锥状体都连接到各自的神经末梢。当肌肉控制眼球转动时，知道感兴趣的物体图像落在中央凹上。锥状体视觉称为白昼视觉或亮视觉。 杆">
+<meta name="twitter:image" content="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>数字图像处理基础与相关操作的matlab基础 | DongXuehui's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">DongXuehui's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="dwyane_dongxh">
+      <meta itemprop="description" content="I am willing to do anything but ordinary.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DongXuehui's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数字图像处理基础与相关操作的matlab基础
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-16 22:56:53" itemprop="dateCreated datePublished" datetime="2020-03-16T22:56:53+08:00">2020-03-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-03-17 21:54:45" itemprop="dateModified" datetime="2020-03-17T21:54:45+08:00">2020-03-17</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="数字图像处理基础与相关操作的matlab基础"><a href="#数字图像处理基础与相关操作的matlab基础" class="headerlink" title="数字图像处理基础与相关操作的matlab基础"></a>数字图像处理基础与相关操作的matlab基础</h1><h2 id="一-数字图像基础"><a href="#一-数字图像基础" class="headerlink" title="一 数字图像基础"></a>一 数字图像基础</h2><h3 id="人眼中的光感受器及特点"><a href="#人眼中的光感受器及特点" class="headerlink" title="人眼中的光感受器及特点"></a>人眼中的光感受器及特点</h3><p>人眼中有两类光感受器：锥状体和杆状体</p>
+<p><img src="1.png" alt="1" style="zoom: 35%;"></p>
+<p><strong>锥状体</strong>：每只眼睛中，锥状体的数量在600～700万之间，主要位于视网膜的中间部分，称之为<strong>中央凹</strong>，<strong><em>对颜色高度敏感</em></strong>；这些锥状体可以帮助充分地分辨图像的细节，每个锥状体都连接到各自的神经末梢。当肌肉控制眼球转动时，知道感兴趣的物体图像落在中央凹上。锥状体视觉称为<strong>白昼视觉</strong>或<strong>亮视觉</strong>。</p>
+<p><strong>杆状体</strong>：每只眼睛约有7500～15000万个杆状体分布在视网膜表面，几个杆状体连接一个神经末梢；杆状体用来<strong>给出视野内一般的总体图像，没有彩色感觉，而对低照明强度敏感</strong>。杆状体视觉称为<strong>微光视觉</strong>或<strong>暗视觉</strong>。</p>
+<p>下图给出了右眼通过光感神经区的剖面的杆状体和锥状体密度。特别注意盲点处没有传感器。</p>
+<p><img src="2.png" alt="2" style="zoom:45%;"></p>
+<h3 id="人眼的亮度适应和辨别"><a href="#人眼的亮度适应和辨别" class="headerlink" title="人眼的亮度适应和辨别"></a>人眼的亮度适应和辨别</h3><p>人的视觉系统能够适应的光强度级别范围时很宽的——从暗阈值到强闪光约有10^10^范围的量级。</p>
+<p>主观亮度 subjective brightness（即由人的视觉系统<strong>感知</strong>的亮度）是进入人眼的光强的对数函数。</p>
+<p><img src="3.png" alt="3" style="zoom:50%;"></p>
+<p>在亮视觉和暗视觉下，光强和主观亮度对应的函数关系由上图可以清晰表明；视觉系统不能够同时在一个范围内工作，确切地说，是通过改变整个灵敏度（B~b~和B~a~所在的一小段曲线）来完成这一变动，这称为<strong>亮度适应现象</strong>。</p>
+<p>视觉系统的当前灵敏度级别称为亮度适应级别。</p>
+<p><strong>感知亮度不是简单的光强度的函数</strong>！</p>
+<p>举例两种现象：</p>
+<ol>
+<li><strong>马赫带</strong> <em>Mach bands</em>    即视觉系统在不同强度区域的边界会出现“上冲”或者“下冲”现象。<img src="4.png" alt="4" style="zoom:50%;"></li>
+<li><strong>同时对比</strong> <em>simultaneous contrast</em>     即感知区域的亮度（即感知亮度）并不简单地取决于其强度</li>
+</ol>
+<p><img src="5.png" alt="5" style="zoom:50%;"></p>
+<p>错觉也是人类视觉系统的一种特性；</p>
+<h3 id="图像表示与取样量化"><a href="#图像表示与取样量化" class="headerlink" title="图像表示与取样量化"></a>图像表示与取样量化</h3><p>​    简单的图像形成模型：$f(x,y)=i(x,y)r(x,y)$ ，其中$0&lt;i(x,y)&lt;\infty$表示入射系数，$0&lt;r(x,y)&lt;1$表示反射系数。有时候如胸透X射线照片，$r(x,y)$表示透射系数。</p>
+<p>​    单色图像在任何坐标$(x_0,y_0)$处的强度（灰度）表示为$l=f(x_0,y_0)$，其中$L_{min}\leqslant l\leqslant L_{max}$，区间$[L_{min},L_{max}]$称为灰度值（强度级）。</p>
+<p>​    一幅图像在计算机里一般以矩阵的形式表示出来，一个像素用矩阵中的一个元素表示，元素数值的大小表示了该像素点的强度级，或者说灰度值。下图为一个$M\times N$的图像矩阵：</p>
+<p><img src="6.png" alt="6" style="zoom:50%;"></p>
+<p>对于单色unit8图像来说，灰度值的范围为$[0,255]$。</p>
+<p>存储一幅图片的需要的大小为每个像素所要的比特数乘上像素个数，单位为bit。</p>
+<h4 id="空间和灰度分辨率"><a href="#空间和灰度分辨率" class="headerlink" title="空间和灰度分辨率"></a>空间和灰度分辨率</h4><p>空间分辨率是指图像中可辨别的最小细节的度量。有很多种度量方法，其中最通用的是<em>每单位距离线对数和每单位距离点数（像素数）</em>。常见的单位如<strong>dpi</strong>指的是每英寸点数。</p>
+<p>灰度分辨率是指灰度级中可分辨的最小变化。</p>
+<h3 id="像素之间的基本关系"><a href="#像素之间的基本关系" class="headerlink" title="像素之间的基本关系"></a>像素之间的基本关系</h3><p>基本概念：</p>
+<ul>
+<li>（对于像素来说）领域：分为$N_4(p)$ 4领域，$N_8(p)$ 8领域，$N_D(p)$ 对角领域</li>
+<li>（此条及以下是对于像素集合来说）$V$是用于定义邻接性的灰度值集合。</li>
+<li>邻接：4邻接，8邻接，m邻接（混合邻接）</li>
+<li>连通性</li>
+<li>区域</li>
+<li>边界</li>
+</ul>
+<p>距离度量：</p>
+<ul>
+<li>欧式距离$D_e$</li>
+<li>城市街区距离$D_4$</li>
+<li>棋盘距离$D_8$</li>
+</ul>
+<h3 id="图像的仿射变换"><a href="#图像的仿射变换" class="headerlink" title="图像的仿射变换"></a>图像的仿射变换</h3><p><img src="7.png" alt="7" style="zoom:75%;"></p>
+<h2 id="二-相关Matlab操作基础"><a href="#二-相关Matlab操作基础" class="headerlink" title="二 相关Matlab操作基础"></a>二 相关Matlab操作基础</h2><h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><p>Coordinate convention in Image Processing Toolbox:    (r,c)    from 1 to number of rows/columns</p>
+<p>(Less frequently) spatial coordinate:x for columns ,and y for rows.</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">f = imread(<span class="string">'filename'</span>);</span><br><span class="line"><span class="built_in">size</span>(f);</span><br><span class="line"></span><br><span class="line">[D1'D2,...<span class="string">'DK] = size(A);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">size(A, 1);%give the size of f along its first dimension</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">%%%display image%%%</span></span><br><span class="line"><span class="string">imshow(f);</span></span><br><span class="line"><span class="string">imshow(f, [low high]);%将所有小于或等于low的值显示为黑色,将所有大于或等于high的值显示为白色,中间的值显示为中间强度值。</span></span><br><span class="line"><span class="string">imshow(f, []);%sets variable low to the minimum value of array f and high to its maximum value.</span></span><br><span class="line"><span class="string">imtool(f);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">%%%wirting Images%%%</span></span><br><span class="line"><span class="string">imwrite(f, '</span>filename');</span><br><span class="line">imwrite(f, <span class="string">'filename.jpg'</span> , <span class="string">'quality'</span> , q);<span class="comment">%the lower the number the higher the degradation due to JPEG compression</span></span><br><span class="line">imfinfo filename;</span><br><span class="line"></span><br><span class="line">K = imfinfo(<span class="string">'bubbles25.jpg'</span>);<span class="comment">% structure variable </span></span><br><span class="line">image_bytes = K.Width*K.Height*K.BitDepth/<span class="number">8</span>;</span><br><span class="line">compressed_bytes = K.FileSize;</span><br><span class="line">compression_ratio = image_bytes/compressed_bytes</span><br><span class="line">compression_ratio <span class="number">35</span> . <span class="number">1</span> <span class="number">6</span> <span class="number">1</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%%%converting Classes%%%</span></span><br><span class="line">B = class_name(A);</span><br></pre></td></tr></table></figure>
+<p><img src="8.png" alt="8" style="zoom:75%;"></p>
+<p>More detail at P28~P33 of <em>DIP Using Matlab</em>.</p>
+<p><strong>operation (A, dim)</strong></p>
+<p>​    该形式的语句返回A中第dim维度的信息（具体取决于operation是什么）</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">d = <span class="built_in">ndims</span>(A);<span class="comment">%gives the number of dimensions of array A,标量被认为1*1的矩阵</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%%%Sparse Matrices稀疏矩阵%%%</span></span><br><span class="line">S = sparse(A);<span class="comment">%by squeezing out all the zeroes</span></span><br><span class="line">Original = full(S);<span class="comment">%recover the original (full) matrix</span></span><br><span class="line"></span><br><span class="line">S = sparse(r, c, s, m, n);<span class="comment">%r for rows,c for columns,s for values,m for M,n for N</span></span><br></pre></td></tr></table></figure>
+<p><img src="9.png" alt="9" style="zoom:75%;"></p>
+<p>magic(M),幻方矩阵；</p>
+<p>eye(M),单位矩阵；</p>
+<p>rand(M,N),在[0,1]均匀分布的随机矩阵；</p>
+<p>randn(M,N),均值为0、方差为1的正态分布的随机矩阵；</p>
+<p><strong>Function Handles</strong>(函数句柄)</p>
+<p><strong>创建函数句柄</strong></p>
+<p><strong>匿名函数</strong></p>
+<p>您可以创建指向匿名函数的句柄。匿名函数是基于单行表达式的 MATLAB 函数，不需要程序文件。构造指向匿名函数的句柄，方法是定义 <code>anonymous_function</code> 函数主体，以及指向匿名函数 <code>arglist</code> 的以逗号分隔的输入参数列表。语法为：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">h = @(arglist)anonymous_function;</span><br></pre></td></tr></table></figure>
+<p>注意循环的优化</p>
+<p><strong>Cell arrays</strong>(元胞数组)</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">C = &#123;f, b, char_array&#125;;</span><br><span class="line">&gt;&gt; C</span><br><span class="line">C=</span><br><span class="line">	[<span class="number">512</span>x512 uint8] [<span class="number">188</span>x2 double] &#123;<span class="number">1</span>x2 cell&#125;</span><br><span class="line">	</span><br><span class="line">&gt;&gt; C&#123;<span class="number">3</span>&#125; <span class="comment">%see the content</span></span><br><span class="line"><span class="built_in">ans</span> =</span><br><span class="line">   <span class="string">' area '</span> <span class="string">' centroid '</span></span><br><span class="line">   </span><br><span class="line">&gt;&gt; C(<span class="number">3</span>) <span class="comment">%see the discription</span></span><br><span class="line"><span class="built_in">ans</span> =</span><br><span class="line">		&#123;<span class="number">1</span>x2 cell&#125;</span><br><span class="line">		</span><br><span class="line">&gt;&gt; f = C&#123;<span class="number">1</span>&#125;; <span class="comment">% extract f from C</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">%%%重要！！！！%%%%</span></span><br><span class="line"></span><br><span class="line">D = <span class="built_in">cellfun</span>(<span class="string">'function_name'</span>, C);<span class="comment">%D的每个元素都包含function_name返回的C中对应元素的值</span></span><br></pre></td></tr></table></figure>
+<h3 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h3><p><strong>向量化循环</strong></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%%%一维索引 举例说明%%%</span></span><br><span class="line"><span class="comment">%%%未优化代码%%%</span></span><br><span class="line"><span class="keyword">for</span> x = <span class="number">1</span>:M</span><br><span class="line">	f(x) = A*<span class="built_in">sin</span>((x<span class="number">-1</span>)/(<span class="number">2</span>*<span class="built_in">pi</span>));</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">%%%优化后代码%%%</span></span><br><span class="line">x = <span class="number">0</span>:M<span class="number">-1</span>;</span><br><span class="line">f = A*<span class="built_in">sin</span>(x/(<span class="number">2</span>*<span class="built_in">pi</span>));</span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%%%二维介绍函数%%%%%%%</span></span><br><span class="line">c = [<span class="number">0</span> <span class="number">1</span>];</span><br><span class="line">r = [<span class="number">0</span> <span class="number">1</span> <span class="number">2</span>];</span><br><span class="line">[C,R] = <span class="built_in">meshgrid</span>(c,r);</span><br><span class="line">&gt;&gt;</span><br><span class="line">	C = </span><br><span class="line">			<span class="number">0</span> <span class="number">1</span></span><br><span class="line">			<span class="number">0</span> <span class="number">1</span></span><br><span class="line">			<span class="number">0</span> <span class="number">1</span></span><br><span class="line">	R = </span><br><span class="line">			<span class="number">0</span> <span class="number">0</span></span><br><span class="line">			<span class="number">1</span> <span class="number">1</span></span><br><span class="line">			<span class="number">2</span> <span class="number">2</span></span><br><span class="line">&gt;&gt;h = R.^<span class="number">2</span> + C.^<span class="number">2</span></span><br><span class="line">	h = </span><br><span class="line">			<span class="number">0</span> <span class="number">1</span></span><br><span class="line">			<span class="number">1</span> <span class="number">2</span></span><br><span class="line">			<span class="number">4</span> <span class="number">5</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%</span></span><br></pre></td></tr></table></figure>
+<p><strong>预分配数组</strong></p>
+<p>加快代码执行时间的另一种方式就是在程序中预分配数组的大小</p>
+<p>例如我们准备创建一个1024X1024大小的图像时，输入一下语句预处理：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">zeros</span>(<span class="number">1024</span>);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数字图像处理/" rel="tag"># 数字图像处理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/15/Skydiving-in-the-Skydive-Golden-Gate/" rel="next" title="Skydiving in the Skydive Golden Gate">
+                <i class="fa fa-chevron-left"></i> Skydiving in the Skydive Golden Gate
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/17/空间域的图像增强/" rel="prev" title="空间域的图像增强">
+                空间域的图像增强 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">dwyane_dongxh</p>
+              <div class="site-description motion-element" itemprop="description">I am willing to do anything but ordinary.</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数字图像处理基础与相关操作的matlab基础"><span class="nav-number">1.</span> <span class="nav-text">数字图像处理基础与相关操作的matlab基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-数字图像基础"><span class="nav-number">1.1.</span> <span class="nav-text">一 数字图像基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#人眼中的光感受器及特点"><span class="nav-number">1.1.1.</span> <span class="nav-text">人眼中的光感受器及特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#人眼的亮度适应和辨别"><span class="nav-number">1.1.2.</span> <span class="nav-text">人眼的亮度适应和辨别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图像表示与取样量化"><span class="nav-number">1.1.3.</span> <span class="nav-text">图像表示与取样量化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#空间和灰度分辨率"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">空间和灰度分辨率</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#像素之间的基本关系"><span class="nav-number">1.1.4.</span> <span class="nav-text">像素之间的基本关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图像的仿射变换"><span class="nav-number">1.1.5.</span> <span class="nav-text">图像的仿射变换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-相关Matlab操作基础"><span class="nav-number">1.2.</span> <span class="nav-text">二 相关Matlab操作基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本操作"><span class="nav-number">1.2.1.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码优化"><span class="nav-number">1.2.2.</span> <span class="nav-text">代码优化</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dwyane_dongxh</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

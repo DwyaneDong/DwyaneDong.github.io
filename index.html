@@ -589,7 +589,7 @@ g = g( 1:size(f, 1), 1:size(f, 2) );
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2020/03/25/空间域滤波器实验报告/" class="post-title-link" itemprop="url">空间域滤波器实验报告</a>
+                <a href="/2020/03/25/空间域滤波器实验报告/" class="post-title-link" itemprop="url">空间域滤波实验报告</a>
               
             
           </h1>
@@ -614,12 +614,24 @@ g = g( 1:size(f, 1), 1:size(f, 2) );
                 
               
 
-              <time title="创建时间：2020-03-25 16:51:24 / 修改时间：16:53:52" itemprop="dateCreated datePublished" datetime="2020-03-25T16:51:24+08:00">2020-03-25</time>
+              <time title="创建时间：2020-03-25 16:51:24" itemprop="dateCreated datePublished" datetime="2020-03-25T16:51:24+08:00">2020-03-25</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-03-26 15:37:55" itemprop="dateModified" datetime="2020-03-26T15:37:55+08:00">2020-03-26</time>
               
             
           </span>
@@ -656,7 +668,7 @@ g = g( 1:size(f, 1), 1:size(f, 2) );
         
           
             <p>
-              空间域滤波器实验报告实验内容: 1.编程实现一幅8比特图像的比特平面分割。
+              空间域滤波实验报告实验内容: 1.编程实现一幅8比特图像的比特平面分割。
  2.思考课后习题3.14、3.17、3.21，并编程验证思路。
 实验过程：实验题一  8比特图像比特面分割原理：把数字图像分解成为位平面，高阶位如前4位包含视觉上很重要的大多数数据；其它位对图像中的更多微小细节有作用。
 
@@ -667,7 +679,7 @@ g = g( 1:size(f, 1), 1:size(f, 2) );
 按照比特面从小到大，逐行逐列遍历，满足条件$2^{n-1}&lt;p_{ij}\leqslant2^n$的像素点，则将其灰度值赋给第n层比特面相应的位置，不满足的点赋值为0。
 
 代码：
-clear;clc;f = imread('aaa.tif');%f = rgb2gray(f);[r,c] = size(f);f1 = double(f)./256;subplot(3,3,1);imshow(f1,[]);title('原图');bitImage = zeros(r,c,8);for n = 1:8    for ri =1:r        for ci = 1:c            %temp = f(r
+clear;clc;f = imread('aaa.tif');%f = rgb2gray(f);[r,c] = size(f);f1 = double(f)./256;subplot(3,3,1);imshow(f1,[]);title('原图');bitImage = zeros(r,c,8);for n = 1:8    for ri =1:r        for ci = 1:c            %temp = f(ri
               ...
             </p>
           <!--noindex-->

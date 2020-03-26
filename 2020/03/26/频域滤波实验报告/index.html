@@ -109,7 +109,7 @@
 <meta property="og:image" content="http://dongxh.cn/2020/03/26/频域滤波实验报告/3.png">
 <meta property="og:image" content="http://dongxh.cn/2020/03/26/频域滤波实验报告/4.png">
 <meta property="og:image" content="http://dongxh.cn/2020/03/26/频域滤波实验报告/5.png">
-<meta property="og:updated_time" content="2020-03-26T07:27:03.686Z">
+<meta property="og:updated_time" content="2020-03-26T07:29:08.589Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="频域滤波实验报告">
 <meta name="twitter:description" content="频域滤波实验报告实验内容1.对一幅原始图像分别做理想、巴特沃斯、高斯低通滤波及高通滤波处理，对比实验效果。 2.对一幅原始图像通过高频增强滤波增强图像。 实验过程实验题一频域滤波Matlab基本步骤：   使用函数paddesize获得填充参数 PQ = paddesize(size(f));  得到使用填充的傅里叶变换 F = fft2(f, PQ(1), PQ(2));  使用本章讨论的任意一">
@@ -440,7 +440,7 @@
                 
               
 
-              <time title="创建时间：2020-03-26 15:25:01 / 修改时间：15:27:03" itemprop="dateCreated datePublished" datetime="2020-03-26T15:25:01+08:00">2020-03-26</time>
+              <time title="创建时间：2020-03-26 15:25:01 / 修改时间：15:29:08" itemprop="dateCreated datePublished" datetime="2020-03-26T15:25:01+08:00">2020-03-26</time>
             
 
             
@@ -847,7 +847,74 @@ H_{hfe}(u,v)=a+bH_{hp}(u,v)</script><p>a是偏移量，b是乘数，$H_{hp}(u,v)
   
 
 
-  <script src="/js/src/next-boot.js?v=7.0.1"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
 </script>
@@ -866,34 +933,7 @@ H_{hfe}(u,v)=a+bH_{hp}(u,v)</script><p>a是偏移量，b是乘数，$H_{hp}(u,v)
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
 
-
-  
-
-  
-
-  
-
-  
-
-
-  
-
-
-  
-
-
-
-
-  
-
-  
-
-  
-  
-
-  
-  
-
+    
   
 
 

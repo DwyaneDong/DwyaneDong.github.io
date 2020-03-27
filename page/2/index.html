@@ -96,28 +96,23 @@
 
 
 
-  <meta name="description" content="由于需要经常远程登录服务器，运行一些耗时较长甚至长期运行的任务，但是经常会碰到由于网络终端或不稳定导致ssh/telnet端口链接的断开。所以如何让命令提交了以后不受关闭本地终端或网络断开的影响呢？下面通过一个例子来解释如何用nohup来实现想要的效果。 nohupnohu名称的含义是no hang up，不要挂断电话。顾名思义，这个命令的作用就是忽略hang up信号（SIGHUP）。信号是发给">
-<meta name="keywords" content="linux">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Linux：远程登录让程序后台运行">
-<meta property="og:url" content="http://dongxh.cn/2019/03/29/Linux：远程登录让程序后台运行/index.html">
+  <meta name="description" content="I am willing to do anything but ordinary.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="DongXuehui&#39;s Blog">
+<meta property="og:url" content="http://dongxh.cn/page/2/index.html">
 <meta property="og:site_name" content="DongXuehui&#39;s Blog">
-<meta property="og:description" content="由于需要经常远程登录服务器，运行一些耗时较长甚至长期运行的任务，但是经常会碰到由于网络终端或不稳定导致ssh/telnet端口链接的断开。所以如何让命令提交了以后不受关闭本地终端或网络断开的影响呢？下面通过一个例子来解释如何用nohup来实现想要的效果。 nohupnohu名称的含义是no hang up，不要挂断电话。顾名思义，这个命令的作用就是忽略hang up信号（SIGHUP）。信号是发给">
+<meta property="og:description" content="I am willing to do anything but ordinary.">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://dongxh.cn/2019/03/29/Linux：远程登录让程序后台运行/man_nohup.png">
-<meta property="og:image" content="http://dongxh.cn/2019/03/29/Linux：远程登录让程序后台运行/nohup.png">
-<meta property="og:updated_time" content="2019-03-29T03:40:53.613Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux：远程登录让程序后台运行">
-<meta name="twitter:description" content="由于需要经常远程登录服务器，运行一些耗时较长甚至长期运行的任务，但是经常会碰到由于网络终端或不稳定导致ssh/telnet端口链接的断开。所以如何让命令提交了以后不受关闭本地终端或网络断开的影响呢？下面通过一个例子来解释如何用nohup来实现想要的效果。 nohupnohu名称的含义是no hang up，不要挂断电话。顾名思义，这个命令的作用就是忽略hang up信号（SIGHUP）。信号是发给">
-<meta name="twitter:image" content="http://dongxh.cn/2019/03/29/Linux：远程登录让程序后台运行/man_nohup.png">
+<meta name="twitter:title" content="DongXuehui&#39;s Blog">
+<meta name="twitter:description" content="I am willing to do anything but ordinary.">
 
 
 
 
 
 
-  <link rel="canonical" href="http://dongxh.cn/2019/03/29/Linux：远程登录让程序后台运行/">
+  <link rel="canonical" href="http://dongxh.cn/page/2/">
 
 
 
@@ -127,7 +122,7 @@
   };
 </script>
 
-  <title>Linux：远程登录让程序后台运行 | DongXuehui's Blog</title>
+  <title>DongXuehui's Blog</title>
   
 
 
@@ -175,7 +170,8 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -377,9 +373,9 @@
           
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -394,7 +390,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dongxh.cn/2019/03/29/Linux：远程登录让程序后台运行/">
+    <link itemprop="mainEntityOfPage" href="http://dongxh.cn/2019/03/23/在linux中添加应用图标/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="dwyane_dongxh">
@@ -411,8 +407,10 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Linux：远程登录让程序后台运行
-
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/03/23/在linux中添加应用图标/" class="post-title-link" itemprop="url">在linux中添加应用图标</a>
               
             
           </h1>
@@ -437,7 +435,7 @@
                 
               
 
-              <time title="创建时间：2019-03-29 11:35:42 / 修改时间：11:40:53" itemprop="dateCreated datePublished" datetime="2019-03-29T11:35:42+08:00">2019-03-29</time>
+              <time title="创建时间：2019-03-23 13:26:44 / 修改时间：17:19:32" itemprop="dateCreated datePublished" datetime="2019-03-23T13:26:44+08:00">2019-03-23</time>
             
 
             
@@ -476,15 +474,25 @@
       
 
       
-        <p>由于需要经常远程登录服务器，运行一些耗时较长甚至长期运行的任务，但是经常会碰到由于网络终端或不稳定导致ssh/telnet端口链接的断开。所以如何让命令提交了以后不受关闭本地终端或网络断开的影响呢？下面通过一个例子来解释如何用nohup来实现想要的效果。</p>
-<h3 id="nohup"><a href="#nohup" class="headerlink" title="nohup"></a>nohup</h3><p>nohu名称的含义是no hang up，不要挂断电话。顾名思义，这个命令的作用就是忽略hang up信号（SIGHUP）。信号是发给程序的软件中断，表明已发生的重要事件。SIGHUP是终端断线信号，信号值为1，控制终端意外终止或者是控制进程结束时发出。</p>
-<p>我们先看看nohup的命令手册：</p>
-<img src="/2019/03/29/Linux：远程登录让程序后台运行/man_nohup.png" title="man_nohup">
-<p>可见，这个命令很容易，就是在nohup后面加上你要执行的命令。</p>
-<p>我们来试一下，我以运行minecraft服务器为例（手动滑稽）：</p>
-<img src="/2019/03/29/Linux：远程登录让程序后台运行/nohup.png" title="nohup">
-<p>运行后，会返回你想要长期运行的任务的PID。</p>
-
+        
+          
+            <p>
+              
+1.Desktop Entry介绍在桌面图形化的linux系统中，我们可以通过点击桌面图标打开相应的应用软件。Linux KDE 和 Linux GNOME 桌面系统都使用 Desktop Entry 文件标准来描述程序启动配置信息。我们以Linux GNOME为例来讲解如何自己构建一个桌面图标。
+2.实例
+建立xxx.desktop文件这些 Desktop Entry 文件通常被存放在 /usr/share/applications/ /opt/gnome/share/applications/ 等目录下。我们进入/usr/share/applications/，建立一个xxx.desktop文件vim xxx.desktop在文件里输入一下内容：[Desktop Entry]Name=Mars4_5Comment=MIPS Assembler and Runtime SimulatorExec=/home/dwyane/download/Mars4_5.jarIcon=/home/dwyane/download/mars.jpgTerminal=falseType=Applica
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/03/23/在linux中添加应用图标/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
       
     </div>
 
@@ -505,40 +513,14 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/linux/" rel="tag"># linux</a>
-          
-        </div>
+
+      
+
       
 
       
       
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/03/24/线性代数知识回顾与重新理解/" rel="next" title="线性代数知识回顾与重新理解">
-                <i class="fa fa-chevron-left"></i> 线性代数知识回顾与重新理解
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/15/Skydiving-in-the-Skydive-Golden-Gate/" rel="prev" title="Skydiving in the Skydive Golden Gate">
-                Skydiving in the Skydive Golden Gate <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -548,15 +530,18 @@
   </article>
 
 
-  </div>
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
           
-
-  
-
-
 
         </div>
         
@@ -576,17 +561,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <div class="site-overview-wrap sidebar-panel">
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -655,23 +631,6 @@
         </div>
       </div>
 
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#nohup"><span class="nav-number">1.</span> <span class="nav-text">nohup</span></a></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
       
 
       
@@ -812,10 +771,6 @@
 
 
   
-  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
-<script src="/js/src/post-details.js?v=7.0.1"></script>
-
-
 
   
 
@@ -849,8 +804,6 @@
   
 
 
-  
-
 
   
 
@@ -865,6 +818,10 @@
   
 
   
+  
+    
+      
+    
   
 
   

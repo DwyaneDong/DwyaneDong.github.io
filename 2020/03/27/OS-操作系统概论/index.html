@@ -127,7 +127,7 @@
 <meta property="og:image" content="http://dongxh.cn/2020/03/27/OS-操作系统概论/21.png">
 <meta property="og:image" content="http://dongxh.cn/2020/03/27/OS-操作系统概论/22.png">
 <meta property="og:image" content="http://dongxh.cn/2020/03/27/OS-操作系统概论/23.png">
-<meta property="og:updated_time" content="2020-03-27T14:26:51.039Z">
+<meta property="og:updated_time" content="2020-03-27T14:29:00.059Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OS--操作系统概论">
 <meta name="twitter:description" content="Operating System—操作系统概论知识要点：  操作系统的定义 操作系统资源管理技术：复用，虚拟，抽象 抽象：三个基本抽象—进程，虚存，文件 虚拟：虚拟机 复用：多道程序设计  了解：  操作系统的历史，分类，常见的操作系统 操作系统接口，操作系统服务   一、计算机系统的软硬件层次结构 硬件层 系统软件（操作系统）层 将硬件封装，调度分配资源，存取保护信息，协调控制并发等 隔离硬件&amp;">
@@ -458,7 +458,7 @@
                 
               
 
-              <time title="创建时间：2020-03-27 22:15:32 / 修改时间：22:26:51" itemprop="dateCreated datePublished" datetime="2020-03-27T22:15:32+08:00">2020-03-27</time>
+              <time title="创建时间：2020-03-27 22:15:32 / 修改时间：22:29:00" itemprop="dateCreated datePublished" datetime="2020-03-27T22:15:32+08:00">2020-03-27</time>
             
 
             
@@ -1022,7 +1022,74 @@ Utilization \ of\ CPU = 1-p^n</script><p>​        其中n称为多道程序的
   
 
 
-  <script src="/js/src/next-boot.js?v=7.0.1"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
 </script>
@@ -1041,34 +1108,7 @@ Utilization \ of\ CPU = 1-p^n</script><p>​        其中n称为多道程序的
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
 
-
-  
-
-  
-
-  
-
-  
-
-
-  
-
-
-  
-
-
-
-
-  
-
-  
-
-  
-  
-
-  
-  
-
+    
   
 
 

@@ -96,23 +96,25 @@
 
 
 
-  <meta name="description" content="I am willing to do anything but ordinary.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="DongXuehui&#39;s Blog">
-<meta property="og:url" content="http://dongxh.cn/page/2/index.html">
+  <meta name="description" content="OS—处理器管理(1)_处理器状态要点：  处理器 程序字状态  处理器指令系统和寄存器计算机中最终被执行的是存储在内存中的机器指令代码。 处理器根据程序计数器的指向从内存中取指令到指令寄存器，然后译码并执行，程序计数器自动增长或变为转移地址以指明下一条待执行指令的地址。 每台计算机的机器指令集称为指令系统，反映计算机的功能和处理能力。  数据处理类指令：用于执行算术和逻辑运算。  I/O类指令：">
+<meta name="keywords" content="操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS--处理器管理（1）_处理器状态">
+<meta property="og:url" content="http://dongxh.cn/2020/03/28/OS-处理器管理（1）-处理器状态/index.html">
 <meta property="og:site_name" content="DongXuehui&#39;s Blog">
-<meta property="og:description" content="I am willing to do anything but ordinary.">
+<meta property="og:description" content="OS—处理器管理(1)_处理器状态要点：  处理器 程序字状态  处理器指令系统和寄存器计算机中最终被执行的是存储在内存中的机器指令代码。 处理器根据程序计数器的指向从内存中取指令到指令寄存器，然后译码并执行，程序计数器自动增长或变为转移地址以指明下一条待执行指令的地址。 每台计算机的机器指令集称为指令系统，反映计算机的功能和处理能力。  数据处理类指令：用于执行算术和逻辑运算。  I/O类指令：">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-03-28T07:14:32.410Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="DongXuehui&#39;s Blog">
-<meta name="twitter:description" content="I am willing to do anything but ordinary.">
+<meta name="twitter:title" content="OS--处理器管理（1）_处理器状态">
+<meta name="twitter:description" content="OS—处理器管理(1)_处理器状态要点：  处理器 程序字状态  处理器指令系统和寄存器计算机中最终被执行的是存储在内存中的机器指令代码。 处理器根据程序计数器的指向从内存中取指令到指令寄存器，然后译码并执行，程序计数器自动增长或变为转移地址以指明下一条待执行指令的地址。 每台计算机的机器指令集称为指令系统，反映计算机的功能和处理能力。  数据处理类指令：用于执行算术和逻辑运算。  I/O类指令：">
 
 
 
 
 
 
-  <link rel="canonical" href="http://dongxh.cn/page/2/">
+  <link rel="canonical" href="http://dongxh.cn/2020/03/28/OS-处理器管理（1）-处理器状态/">
 
 
 
@@ -122,7 +124,7 @@
   };
 </script>
 
-  <title>DongXuehui's Blog</title>
+  <title>OS--处理器管理（1）_处理器状态 | DongXuehui's Blog</title>
   
 
 
@@ -170,8 +172,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left 
-  page-home">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -373,9 +374,9 @@
           
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -390,7 +391,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dongxh.cn/2019/03/24/线性代数知识回顾与重新理解/">
+    <link itemprop="mainEntityOfPage" href="http://dongxh.cn/2020/03/28/OS-处理器管理（1）-处理器状态/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="dwyane_dongxh">
@@ -407,10 +408,8 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/03/24/线性代数知识回顾与重新理解/" class="post-title-link" itemprop="url">线性代数知识回顾与重新理解</a>
+          <h1 class="post-title" itemprop="name headline">OS--处理器管理（1）_处理器状态
+
               
             
           </h1>
@@ -435,7 +434,7 @@
                 
               
 
-              <time title="创建时间：2019-03-24 14:23:40 / 修改时间：19:00:43" itemprop="dateCreated datePublished" datetime="2019-03-24T14:23:40+08:00">2019-03-24</time>
+              <time title="创建时间：2020-03-28 15:13:22 / 修改时间：15:14:32" itemprop="dateCreated datePublished" datetime="2020-03-28T15:13:22+08:00">2020-03-28</time>
             
 
             
@@ -474,33 +473,68 @@
       
 
       
-        
-          
-            <p>
-              知识回顾与重新理解1.矩阵的乘法本质是一种运动,是一种由基的变换带来的运动。以$\boldsymbol{b}=A\boldsymbol{x}​$为例，其中$b​$和$x​$为二维向量，而$A=\left(\begin{matrix} \cos \theta &amp; -\sin \theta \\ \sin \theta &amp; \cos \theta \end{matrix}\right)​$，如下图:
+        <h1 id="OS—处理器管理-1-处理器状态"><a href="#OS—处理器管理-1-处理器状态" class="headerlink" title="OS—处理器管理(1)_处理器状态"></a>OS—处理器管理(1)_处理器状态</h1><p>要点：</p>
+<ul>
+<li>处理器</li>
+<li>程序字状态</li>
+</ul>
+<h3 id="处理器"><a href="#处理器" class="headerlink" title="处理器"></a>处理器</h3><h4 id="指令系统和寄存器"><a href="#指令系统和寄存器" class="headerlink" title="指令系统和寄存器"></a>指令系统和寄存器</h4><p>计算机中最终被执行的是存储在内存中的机器指令代码。</p>
+<p>处理器根据程序计数器的指向从内存中取指令到指令寄存器，然后译码并执行，程序计数器自动增长或变为转移地址以指明下一条待执行指令的地址。</p>
+<p>每台计算机的机器指令集称为<strong>指令系统</strong>，反映计算机的功能和处理能力。</p>
+<ul>
+<li>数据处理类指令：用于执行算术和逻辑运算。 </li>
+<li>I/O类指令：用于启动外围设备，让主存和设备交换数据。 </li>
+<li>寄存器数据交换类指令：用于在处理器的寄存器和存储器之间交换数据。 </li>
+<li>转移类指令：用于改变执行指令序列。</li>
+<li>处理器控制指令：修改处理器状态，改变处理器工作方式。</li>
+</ul>
+<p>以Intel x86为例：</p>
+<ul>
+<li>通用寄存器：                                $EAX ,EBX,ECX,EDX$.</li>
+<li>指针及变址寄存器：                    $ESP,EBP,ESI,EDI$.</li>
+<li>段选择符寄存器：                        $CS,DS,SS,ES,FS,GS$.</li>
+<li>指令指针寄存器和标志寄存器：$EIP,EFLAGS$.</li>
+<li>控制寄存器：                               $CRO,CR1,CR2,CR3$.</li>
+<li>外部设备使用的寄存器。</li>
+</ul>
+<p><strong>问题：在单道程序系统中，用户程序可以直接使用CPU指令启动I/O设备，进行I/O操作。在多道程序系统中，这种模式可不可行？</strong></p>
+<h4 id="特权指令和非特权指令"><a href="#特权指令和非特权指令" class="headerlink" title="特权指令和非特权指令"></a>特权指令和非特权指令</h4><p><strong>特权指令</strong>：只仅能在内核态下才能使用的指令，这些指令涉及改变机器状态，修改寄存器内容，启动设备I/O等。</p>
+<p><strong>非特权指令</strong>：在管态和目态下都能执行。（</p>
+<p>操作系统程序能运行全部机器指令，应用程序只能使用非特权指令。</p>
+<p>当应用程序试图执行特权指令，将会导致非法执行二产生的保护中断，继而转向操作系统的“用户非法执行特权指令”的异常处理程序处理。</p>
+<h4 id="内核态和用户态"><a href="#内核态和用户态" class="headerlink" title="内核态和用户态"></a>内核态和用户态</h4><p>处理器状态标志：管理状态（核心状态、特态或管态）和用户状态（目标状态、常态或目态)。</p>
+<p>Intel x86处理器状态有4种，0级权限最高，3级权限最低。</p>
+<h4 id="处理器状态及其转换"><a href="#处理器状态及其转换" class="headerlink" title="处理器状态及其转换"></a>处理器状态及其转换</h4><p>在下列三种情况下会导致处理器状态从用户态向内核态转变：</p>
+<ol>
+<li>程序请求操作系统服务，执行系统调用</li>
+<li>程序运行时产生中断事件（如I/O操作完成），运行程序被中断，转向中断处理程序执行</li>
+<li>程序运行时产生异常事件（如发生程序性中断，或目态执行特权指令），运行程序被打断，转向异常处理程序工作</li>
+</ol>
+<p>而从内核态向用户态转换，则通过一条称为加载程序状态字的特权指令（Intel x86为iret指令）</p>
+<h4 id="用户栈和核心栈"><a href="#用户栈和核心栈" class="headerlink" title="用户栈和核心栈"></a>用户栈和核心栈</h4><p>用户栈：用户进程空间中开辟的一块区域，用于保护应用程序的子程序（子函数）之间互相调用的参数，返回值，返回点以及子程序的局部变量</p>
+<p>核心栈：也称内核栈或系统栈。是内存中属于操作系统空间的一块区域。</p>
+<p>核心栈的用途：</p>
+<ol>
+<li>保护中断现场，对于嵌套中断，被中断程序的现场信息依次压入核心栈，中断返回时逆序弹出；</li>
+<li>保存操作系统程序（函数）间相互调用的参数，返回值，返回点以及程序局部变量。</li>
+</ol>
+<p>每个进程被创建时捆绑一个核心栈，具有可读可写不可执行属性。</p>
+<p>栈指针：为硬件栈指针，用户栈和核心栈共用一个栈指针。</p>
+<h3 id="程序状态字"><a href="#程序状态字" class="headerlink" title="程序状态字"></a>程序状态字</h3><p>$Program Status Word,PSW$ 程序状态字。PSW用来<strong>控制指令执行顺序</strong>并<strong>保留和指示与程序有关的系统状态和各种信息</strong>，主要作用是实现程序状态的保护和恢复。每个正在执行的程序都有一个与其当前状态相关的PSW，每个处理器都设置一个PSW寄存器。程序占有处理器执行，它的PSW将占有PSW寄存器。</p>
+<p>操作系统将程序运行时的一组<strong>动态信息</strong>汇集在一起。并存放在处理器的一组特殊寄存器里面，以方便系统控制和管理。</p>
+<p>$PSW$寄存器包括以下内容：</p>
+<ul>
+<li>程序基本状态：<ul>
+<li>程序计数器；</li>
+<li>条件码；</li>
+<li>处理器状态位；</li>
+</ul>
+</li>
+<li>中断码。保存程序执行时当前发生的中断事件。</li>
+<li>中断屏蔽位。指明程序执行中发生中断事件时，是否响应出现的中断事件。</li>
+</ul>
+<p>在Intel x86机器中，$PSW$由标志寄存器$EFLAGS$和指针寄存器$EIP$组成，均为32位。$EFLAGS$低16位称为$FLAGS$，可以当作一个单元来处理。指令指针寄存器$EIP$的低16位称为$IP$（保护模式需使用32位），可以当作一个单元使用，存放顺序执行的下一条指令相对于当前代码段起始地址的一个偏移量。</p>
 
-$A$可以分解成一对新的基，则矩阵乘法$\boldsymbol{b}=A\boldsymbol{x}$的意义就可以解释为：将原空间（原空间的基为正交基）下的坐标变换成了由新的一对基构成的空间下的坐标。
-
-在此意义下，矩阵$A$可理解为是两个空间下坐标或向量的一个变换。而得到的结果$\boldsymbol{b}$向量或是说坐标，是在原空间里观察得到的。（此处将原空间看成是世界坐标下的空间）
-2.矩阵的秩
-秩 是通过矩阵变换后的维度。
-
-秩 是列空间的维度。
-列空间是上面矩阵$A$分解后的两个向量张成的空间
-
-上面我说矩阵的秩是列空间的维度，这并非完全正确的。列空间的维度准确来说
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/03/24/线性代数知识回顾与重新理解/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
       
     </div>
 
@@ -521,170 +555,36 @@ $A$可以分解成一对新的基，则矩阵乘法$\boldsymbol{b}=A\boldsymbol{
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dongxh.cn/2019/03/23/在linux中添加应用图标/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="dwyane_dongxh">
-      <meta itemprop="description" content="I am willing to do anything but ordinary.">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="DongXuehui's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/03/23/在linux中添加应用图标/" class="post-title-link" itemprop="url">在linux中添加应用图标</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-03-23 13:26:44 / 修改时间：17:19:32" itemprop="dateCreated datePublished" datetime="2019-03-23T13:26:44+08:00">2019-03-23</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
           
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          
-            <p>
-              
-1.Desktop Entry介绍在桌面图形化的linux系统中，我们可以通过点击桌面图标打开相应的应用软件。Linux KDE 和 Linux GNOME 桌面系统都使用 Desktop Entry 文件标准来描述程序启动配置信息。我们以Linux GNOME为例来讲解如何自己构建一个桌面图标。
-2.实例
-建立xxx.desktop文件这些 Desktop Entry 文件通常被存放在 /usr/share/applications/ /opt/gnome/share/applications/ 等目录下。我们进入/usr/share/applications/，建立一个xxx.desktop文件vim xxx.desktop在文件里输入一下内容：[Desktop Entry]Name=Mars4_5Comment=MIPS Assembler and Runtime SimulatorExec=/home/dwyane/download/Mars4_5.jarIcon=/home/dwyane/download/mars.jpgTerminal=falseType=Applica
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/03/23/在linux中添加应用图标/#more" rel="contents">
-                阅读全文 &raquo;
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/27/OS-操作系统概论/" rel="next" title="OS--操作系统概论">
+                <i class="fa fa-chevron-left"></i> OS--操作系统概论
               </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
+            
+          </div>
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
 
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -694,18 +594,15 @@ $A$可以分解成一对新的基，则矩阵乘法$\boldsymbol{b}=A\boldsymbol{
   </article>
 
 
-    
-  </section>
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-  </nav>
-
+  </div>
 
 
           </div>
           
+
+  
+
+
 
         </div>
         
@@ -725,8 +622,17 @@ $A$可以分解成一对新的基，则矩阵乘法$\boldsymbol{b}=A\boldsymbol{
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -795,6 +701,23 @@ $A$可以分解成一对新的基，则矩阵乘法$\boldsymbol{b}=A\boldsymbol{
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OS—处理器管理-1-处理器状态"><span class="nav-number">1.</span> <span class="nav-text">OS—处理器管理(1)_处理器状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#处理器"><span class="nav-number">1.0.1.</span> <span class="nav-text">处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指令系统和寄存器"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">指令系统和寄存器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特权指令和非特权指令"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">特权指令和非特权指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内核态和用户态"><span class="nav-number">1.0.1.3.</span> <span class="nav-text">内核态和用户态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理器状态及其转换"><span class="nav-number">1.0.1.4.</span> <span class="nav-text">处理器状态及其转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户栈和核心栈"><span class="nav-number">1.0.1.5.</span> <span class="nav-text">用户栈和核心栈</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序状态字"><span class="nav-number">1.0.2.</span> <span class="nav-text">程序状态字</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       
@@ -935,6 +858,10 @@ $A$可以分解成一对新的基，则矩阵乘法$\boldsymbol{b}=A\boldsymbol{
 
 
   
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
 
   
 
@@ -951,6 +878,8 @@ $A$可以分解成一对新的基，则矩阵乘法$\boldsymbol{b}=A\boldsymbol{
   
 
 
+  
+
 
   
 
@@ -965,14 +894,6 @@ $A$可以分解成一对新的基，则矩阵乘法$\boldsymbol{b}=A\boldsymbol{
   
 
   
-  
-    
-      
-        
-      
-    
-      
-    
   
 
   

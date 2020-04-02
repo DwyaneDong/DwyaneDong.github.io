@@ -390,7 +390,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dongxh.cn/2020/03/30/OS-处理器管理（1）-中断技术/">
+    <link itemprop="mainEntityOfPage" href="http://dongxh.cn/2020/04/02/OS-处理器管理（3）-进程及其实现/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="dwyane_dongxh">
@@ -410,7 +410,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2020/03/30/OS-处理器管理（1）-中断技术/" class="post-title-link" itemprop="url">OS--处理器管理（1）_中断技术</a>
+                <a href="/2020/04/02/OS-处理器管理（3）-进程及其实现/" class="post-title-link" itemprop="url">OS--处理器管理（3）_进程及其实现</a>
               
             
           </h1>
@@ -435,12 +435,200 @@
                 
               
 
-              <time title="创建时间：2020-03-30 22:40:52 / 修改时间：22:54:20" itemprop="dateCreated datePublished" datetime="2020-03-30T22:40:52+08:00">2020-03-30</time>
+              <time title="创建时间：2020-04-02 16:17:21 / 修改时间：16:21:06" itemprop="dateCreated datePublished" datetime="2020-04-02T16:17:21+08:00">2020-04-02</time>
             
 
             
               
 
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              OS—处理器管理（3）_进程及其实现知识点：
+
+进程定义和属性
+进程状态和转换
+进程描述和组成
+进程上下文切换与处理器状态转换
+进程控制和管理
+
+进程的定义和属性“进程“是操作系统中最重要最基本的概念，在多道程序系统提出后，为了刻画系统内部动态状况，描述运行程序活动规律而提出的新概念。
+从原理角度来看，进程是支持程序执行的一种系统机制，是对处理器上运行程序的活动规律的抽象；
+从现实角度看，进程是一种数据结构，用来准确刻画运行程序的状态和系统动态变化状况；
+引入进程的两个目的：
+
+刻画程序的并发性；
+
+解决资源的共享性
+“可再入”程序指的是能够被多个程序同时调用的程序；“可再用”程序是指在被调用的过程中可以有自身修改，在调用它的程序退出之前不允许其他程序来调用。
+
+
+引入进程的概念后，程序与程序的执行（计算不再一一对应）。
+定义：进程是既能描述程序的并发执行，又能共享系统调用资源的一个基本单位。（操作系统要为引入进程而付出（进程占用的）空间和（进程调度的）时间的代价）。进程是具有独立功能的程序在某个数据集合上的一次运行活动，也是操作系统进行资源分配和保护的基本单位。
+进程的属性：
+
+动态
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2020/04/02/OS-处理器管理（3）-进程及其实现/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dongxh.cn/2020/03/30/OS-处理器管理（1）-中断技术/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="dwyane_dongxh">
+      <meta itemprop="description" content="I am willing to do anything but ordinary.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DongXuehui's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/30/OS-处理器管理（1）-中断技术/" class="post-title-link" itemprop="url">OS--处理器管理（2）_中断技术</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-30 22:40:52" itemprop="dateCreated datePublished" datetime="2020-03-30T22:40:52+08:00">2020-03-30</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-04-02 16:18:49" itemprop="dateModified" datetime="2020-04-02T16:18:49+08:00">2020-04-02</time>
               
             
           </span>
@@ -1983,162 +2171,6 @@ $s=c\ r^{\gamma}$，$c$为常数。
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dongxh.cn/2019/08/15/Skydiving-in-the-Skydive-Golden-Gate/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="dwyane_dongxh">
-      <meta itemprop="description" content="I am willing to do anything but ordinary.">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="DongXuehui's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/08/15/Skydiving-in-the-Skydive-Golden-Gate/" class="post-title-link" itemprop="url">Skydiving in the Skydive Golden Gate</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-08-15 13:25:09 / 修改时间：13:58:32" itemprop="dateCreated datePublished" datetime="2019-08-15T13:25:09+08:00">2019-08-15</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              skydiving in the Skydive Golden Gate
-
-On the 11, August, 2019,  I went to the skydive Club alone which named Skydive Golden Gate in Novato.And I experienced the most exciting adventure ever in my life yet.
-When I heard that my friends would let me go alone because of the fear, honestly, I was a little bit hesitated about this trip. Later in the evening, a thought came into my mind , life is a long-distance adventure, I would   recall this decision and be inspired to go on when I face with some r
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/08/15/Skydiving-in-the-Skydive-Golden-Gate/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2185,7 +2217,7 @@ When I heard that my friends would let me go alone because of the fear, honestly
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

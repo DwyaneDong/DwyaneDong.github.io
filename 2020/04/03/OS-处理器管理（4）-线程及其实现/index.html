@@ -96,25 +96,29 @@
 
 
 
-  <meta name="description" content="OS—处理器管理(1)_处理器状态要点：  处理器 程序字状态  处理器指令系统和寄存器计算机中最终被执行的是存储在内存中的机器指令代码。 处理器根据程序计数器的指向从内存中取指令到指令寄存器，然后译码并执行，程序计数器自动增长或变为转移地址以指明下一条待执行指令的地址。 每台计算机的机器指令集称为指令系统，反映计算机的功能和处理能力。  数据处理类指令：用于执行算术和逻辑运算。  I/O类指令：">
+  <meta name="description" content="OS—处理器管理（4）_线程及其实现知识点：  引入多线程的动机 多线程环境中的进程和线程 线程的实现  引入多线程的动机在引入进程的概念后，又引入线程的概念，目的是为了减少程序并发执行时所付出的时空开销，使得并发颗粒更细，并发性更好。 引入线程的基本思路是：把进程的两项功能独立分配资源和被调度分派执行分离开来。 独立分配资源：任由进程完成，作为系统资源分配和保护的独立单位，无须频繁切换。 被调度">
 <meta name="keywords" content="操作系统">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OS--处理器管理（1）_处理器状态">
-<meta property="og:url" content="http://dongxh.cn/2020/03/28/OS-处理器管理（1）-处理器状态/index.html">
+<meta property="og:title" content="OS--处理器管理（4）_线程及其实现">
+<meta property="og:url" content="http://dongxh.cn/2020/04/03/OS-处理器管理（4）-线程及其实现/index.html">
 <meta property="og:site_name" content="DongXuehui&#39;s Blog">
-<meta property="og:description" content="OS—处理器管理(1)_处理器状态要点：  处理器 程序字状态  处理器指令系统和寄存器计算机中最终被执行的是存储在内存中的机器指令代码。 处理器根据程序计数器的指向从内存中取指令到指令寄存器，然后译码并执行，程序计数器自动增长或变为转移地址以指明下一条待执行指令的地址。 每台计算机的机器指令集称为指令系统，反映计算机的功能和处理能力。  数据处理类指令：用于执行算术和逻辑运算。  I/O类指令：">
+<meta property="og:description" content="OS—处理器管理（4）_线程及其实现知识点：  引入多线程的动机 多线程环境中的进程和线程 线程的实现  引入多线程的动机在引入进程的概念后，又引入线程的概念，目的是为了减少程序并发执行时所付出的时空开销，使得并发颗粒更细，并发性更好。 引入线程的基本思路是：把进程的两项功能独立分配资源和被调度分派执行分离开来。 独立分配资源：任由进程完成，作为系统资源分配和保护的独立单位，无须频繁切换。 被调度">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-03-28T07:14:32.410Z">
+<meta property="og:image" content="http://dongxh.cn/2020/04/03/OS-处理器管理（4）-线程及其实现/1.png">
+<meta property="og:image" content="http://dongxh.cn/2020/04/03/OS-处理器管理（4）-线程及其实现/2.png">
+<meta property="og:image" content="http://dongxh.cn/2020/04/03/OS-处理器管理（4）-线程及其实现/3.png">
+<meta property="og:updated_time" content="2020-04-03T13:12:47.160Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OS--处理器管理（1）_处理器状态">
-<meta name="twitter:description" content="OS—处理器管理(1)_处理器状态要点：  处理器 程序字状态  处理器指令系统和寄存器计算机中最终被执行的是存储在内存中的机器指令代码。 处理器根据程序计数器的指向从内存中取指令到指令寄存器，然后译码并执行，程序计数器自动增长或变为转移地址以指明下一条待执行指令的地址。 每台计算机的机器指令集称为指令系统，反映计算机的功能和处理能力。  数据处理类指令：用于执行算术和逻辑运算。  I/O类指令：">
+<meta name="twitter:title" content="OS--处理器管理（4）_线程及其实现">
+<meta name="twitter:description" content="OS—处理器管理（4）_线程及其实现知识点：  引入多线程的动机 多线程环境中的进程和线程 线程的实现  引入多线程的动机在引入进程的概念后，又引入线程的概念，目的是为了减少程序并发执行时所付出的时空开销，使得并发颗粒更细，并发性更好。 引入线程的基本思路是：把进程的两项功能独立分配资源和被调度分派执行分离开来。 独立分配资源：任由进程完成，作为系统资源分配和保护的独立单位，无须频繁切换。 被调度">
+<meta name="twitter:image" content="http://dongxh.cn/2020/04/03/OS-处理器管理（4）-线程及其实现/1.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://dongxh.cn/2020/03/28/OS-处理器管理（1）-处理器状态/">
+  <link rel="canonical" href="http://dongxh.cn/2020/04/03/OS-处理器管理（4）-线程及其实现/">
 
 
 
@@ -124,7 +128,7 @@
   };
 </script>
 
-  <title>OS--处理器管理（1）_处理器状态 | DongXuehui's Blog</title>
+  <title>OS--处理器管理（4）_线程及其实现 | DongXuehui's Blog</title>
   
 
 
@@ -391,7 +395,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dongxh.cn/2020/03/28/OS-处理器管理（1）-处理器状态/">
+    <link itemprop="mainEntityOfPage" href="http://dongxh.cn/2020/04/03/OS-处理器管理（4）-线程及其实现/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="dwyane_dongxh">
@@ -408,7 +412,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">OS--处理器管理（1）_处理器状态
+          <h1 class="post-title" itemprop="name headline">OS--处理器管理（4）_线程及其实现
 
               
             
@@ -434,7 +438,7 @@
                 
               
 
-              <time title="创建时间：2020-03-28 15:13:22 / 修改时间：15:14:32" itemprop="dateCreated datePublished" datetime="2020-03-28T15:13:22+08:00">2020-03-28</time>
+              <time title="创建时间：2020-04-03 21:10:44 / 修改时间：21:12:47" itemprop="dateCreated datePublished" datetime="2020-04-03T21:10:44+08:00">2020-04-03</time>
             
 
             
@@ -473,67 +477,85 @@
       
 
       
-        <h1 id="OS—处理器管理-1-处理器状态"><a href="#OS—处理器管理-1-处理器状态" class="headerlink" title="OS—处理器管理(1)_处理器状态"></a>OS—处理器管理(1)_处理器状态</h1><p>要点：</p>
+        <h1 id="OS—处理器管理（4）-线程及其实现"><a href="#OS—处理器管理（4）-线程及其实现" class="headerlink" title="OS—处理器管理（4）_线程及其实现"></a>OS—处理器管理（4）_线程及其实现</h1><p>知识点：</p>
 <ul>
-<li>处理器</li>
-<li>程序字状态</li>
+<li>引入多线程的动机</li>
+<li>多线程环境中的进程和线程</li>
+<li>线程的实现</li>
 </ul>
-<h3 id="处理器"><a href="#处理器" class="headerlink" title="处理器"></a>处理器</h3><h4 id="指令系统和寄存器"><a href="#指令系统和寄存器" class="headerlink" title="指令系统和寄存器"></a>指令系统和寄存器</h4><p>计算机中最终被执行的是存储在内存中的机器指令代码。</p>
-<p>处理器根据程序计数器的指向从内存中取指令到指令寄存器，然后译码并执行，程序计数器自动增长或变为转移地址以指明下一条待执行指令的地址。</p>
-<p>每台计算机的机器指令集称为<strong>指令系统</strong>，反映计算机的功能和处理能力。</p>
-<ul>
-<li>数据处理类指令：用于执行算术和逻辑运算。 </li>
-<li>I/O类指令：用于启动外围设备，让主存和设备交换数据。 </li>
-<li>寄存器数据交换类指令：用于在处理器的寄存器和存储器之间交换数据。 </li>
-<li>转移类指令：用于改变执行指令序列。</li>
-<li>处理器控制指令：修改处理器状态，改变处理器工作方式。</li>
-</ul>
-<p>以Intel x86为例：</p>
-<ul>
-<li>通用寄存器：                                $EAX ,EBX,ECX,EDX$.</li>
-<li>指针及变址寄存器：                    $ESP,EBP,ESI,EDI$.</li>
-<li>段选择符寄存器：                        $CS,DS,SS,ES,FS,GS$.</li>
-<li>指令指针寄存器和标志寄存器：$EIP,EFLAGS$.</li>
-<li>控制寄存器：                               $CRO,CR1,CR2,CR3$.</li>
-<li>外部设备使用的寄存器。</li>
-</ul>
-<p><strong>问题：在单道程序系统中，用户程序可以直接使用CPU指令启动I/O设备，进行I/O操作。在多道程序系统中，这种模式可不可行？</strong></p>
-<h4 id="特权指令和非特权指令"><a href="#特权指令和非特权指令" class="headerlink" title="特权指令和非特权指令"></a>特权指令和非特权指令</h4><p><strong>特权指令</strong>：只仅能在内核态下才能使用的指令，这些指令涉及改变机器状态，修改寄存器内容，启动设备I/O等。</p>
-<p><strong>非特权指令</strong>：在管态和目态下都能执行。（</p>
-<p>操作系统程序能运行全部机器指令，应用程序只能使用非特权指令。</p>
-<p>当应用程序试图执行特权指令，将会导致非法执行二产生的保护中断，继而转向操作系统的“用户非法执行特权指令”的异常处理程序处理。</p>
-<h4 id="内核态和用户态"><a href="#内核态和用户态" class="headerlink" title="内核态和用户态"></a>内核态和用户态</h4><p>处理器状态标志：管理状态（核心状态、特态或管态）和用户状态（目标状态、常态或目态)。</p>
-<p>Intel x86处理器状态有4种，0级权限最高，3级权限最低。</p>
-<h4 id="处理器状态及其转换"><a href="#处理器状态及其转换" class="headerlink" title="处理器状态及其转换"></a>处理器状态及其转换</h4><p>在下列三种情况下会导致处理器状态从用户态向内核态转变：</p>
+<h2 id="引入多线程的动机"><a href="#引入多线程的动机" class="headerlink" title="引入多线程的动机"></a>引入多线程的动机</h2><p>在引入进程的概念后，又引入线程的概念，目的是为了减少程序并发执行时所付出的时空开销，使得并发颗粒更细，并发性更好。</p>
+<p>引入线程的基本思路是：把进程的两项功能<strong>独立分配资源</strong>和<strong>被调度分派执行</strong>分离开来。</p>
+<p><strong>独立分配资源</strong>：任由进程完成，作为系统资源分配和保护的独立单位，无须频繁切换。</p>
+<p><strong>被调度分派执行</strong>：交给称为线程的实体来完成，线程作为系统调度和分派的基本单位，会被频繁地调度和切换。</p>
+<p><strong>多线程结构进程的优点：</strong></p>
 <ol>
-<li>程序请求操作系统服务，执行系统调用</li>
-<li>程序运行时产生中断事件（如I/O操作完成），运行程序被中断，转向中断处理程序执行</li>
-<li>程序运行时产生异常事件（如发生程序性中断，或目态执行特权指令），运行程序被打断，转向异常处理程序工作</li>
+<li>快速线程切换。同一进程中的多线程切换只需要改变堆栈和寄存器，地址空间不变。</li>
+<li>通信易于实现。自动共享进程的内存和文件，线程可自由访问全局数据，实现数据共享十分方便，线程通信相对简单不必经过内核。</li>
+<li>减少管理开销。线程创建和撤销工作比进程少很多，并且无须再分配存储空间和各种资源。</li>
+<li>并发程度提高。</li>
 </ol>
-<p>而从内核态向用户态转换，则通过一条称为加载程序状态字的特权指令（Intel x86为iret指令）</p>
-<h4 id="用户栈和核心栈"><a href="#用户栈和核心栈" class="headerlink" title="用户栈和核心栈"></a>用户栈和核心栈</h4><p>用户栈：用户进程空间中开辟的一块区域，用于保护应用程序的子程序（子函数）之间互相调用的参数，返回值，返回点以及子程序的局部变量</p>
-<p>核心栈：也称内核栈或系统栈。是内存中属于操作系统空间的一块区域。</p>
-<p>核心栈的用途：</p>
+<h2 id="多线程环境中的进程和线程"><a href="#多线程环境中的进程和线程" class="headerlink" title="多线程环境中的进程和线程"></a>多线程环境中的进程和线程</h2><h4 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h4><p>系统调度的基本单位是线程而不是进程,每当创建一个进程时，至少要同时为该进程创建一个线程</p>
+<p>多线程环境下线程和进程：</p>
+<p><img src="1.png" style="zoom: 45%;"></p>
+<p>多进程结构进程结构示意图：</p>
+<p>进程分为<strong>资源集合</strong>和<strong>线程集合</strong>。进程要支撑线程运行，为线程提供虚拟地址空间和各种资源。</p>
+<p>进程封装管理信息，包括对指令代码、全局数据、打开的文件和信号量等共享部分的管理。</p>
+<p>线程封装执行信息，包括状态信息、寄存器、执行栈（用户栈指针与核心栈指针）和局部变量、过程调用参数，返回值等私有部分的管理。</p>
+<p><img src="2.png" style="zoom:60%;"></p>
+<p>也把线程称为轻量进程（Light Weight Process, LWP）。</p>
+<h4 id="线程状态"><a href="#线程状态" class="headerlink" title="线程状态"></a>线程状态</h4><p>线程状态有运行，就绪，等待和终止，线程的状态转换与进程类似。</p>
+<p>由于线程不是资源拥有单位，挂起状态对于线程是没有意义的。挂起操作所引起的状态是进程级状态。</p>
+<p>如果进程挂起后被对换出主存，则它的所有线程因共享进程的地址空间，也必须全部对换出去。</p>
+<h4 id="线程组织"><a href="#线程组织" class="headerlink" title="线程组织"></a>线程组织</h4><p>一个进程可以包含若干线程，线程有多种组织方式：</p>
 <ol>
-<li>保护中断现场，对于嵌套中断，被中断程序的现场信息依次压入核心栈，中断返回时逆序弹出；</li>
-<li>保存操作系统程序（函数）间相互调用的参数，返回值，返回点以及程序局部变量。</li>
+<li>调度员-工作者模式：进程中的一个线程担任调度员、接收和处理工作请求，其他线程是工作者线程，由调度员线程分配任务并处理工作请求。</li>
+<li>组模式：进程中的各个线程都可以取得并处理工作请求，有时某个线程被设计成专门执行特点任务，并建立相应任务队列。</li>
+<li>流水线模式：线程排成某个次序，第一线程所生产的数据传给下一个线程进行处理，依次类推，数据按照排定次序由线程依次传递以完成被请求的任务</li>
 </ol>
-<p>每个进程被创建时捆绑一个核心栈，具有可读可写不可执行属性。</p>
-<p>栈指针：为硬件栈指针，用户栈和核心栈共用一个栈指针。</p>
-<h3 id="程序状态字"><a href="#程序状态字" class="headerlink" title="程序状态字"></a>程序状态字</h3><p>$Program Status Word,PSW$ 程序状态字。PSW用来<strong>控制指令执行顺序</strong>并<strong>保留和指示与程序有关的系统状态和各种信息</strong>，主要作用是实现程序状态的保护和恢复。每个正在执行的程序都有一个与其当前状态相关的PSW，每个处理器都设置一个PSW寄存器。程序占有处理器执行，它的PSW将占有PSW寄存器。</p>
-<p>操作系统将程序运行时的一组<strong>动态信息</strong>汇集在一起。并存放在处理器的一组特殊寄存器里面，以方便系统控制和管理。</p>
-<p>$PSW$寄存器包括以下内容：</p>
+<h2 id="线程的实现"><a href="#线程的实现" class="headerlink" title="线程的实现"></a>线程的实现</h2><p>多线程的实现分为三类：</p>
+<ol>
+<li>用户级线程（User Level Thread , ULT）</li>
+<li>内核级线程（Kernel Level Thread , KLT）</li>
+<li>混合式线程，同时支持ULT和KLT</li>
+</ol>
+<h4 id="用户级线程ULT"><a href="#用户级线程ULT" class="headerlink" title="用户级线程ULT"></a>用户级线程ULT</h4><p>由用户应用程序建立、调度和管理的线程。(如Java ，Informix)</p>
+<ol>
+<li>不依赖于OS内核，应用进程利用<strong>线程库</strong>提供创建、同步、调度和管理线程的函数来控制用户线程。</li>
+<li>调度由应用软件内部进行，通常采用非抢先式和更简单的规则，也无需用户态/核心态切换，所以速度特别快。一个线程发起系统调用而阻塞，则整个进程在等待。时间片分配给进程，多线程则每个线程就慢。</li>
+</ol>
+<p><strong>线程库</strong>：基于多线程的应用程序的开发和运行环境。</p>
+<p>内核不知道线程的活动，但仍然管理线程所属进程的活动；当线程调用系统调用时，整个进程阻塞；但对线程库来说，线程仍然是运行状态，即线程状态是与进程状态独立的。</p>
+<p>优点：</p>
 <ul>
-<li>程序基本状态：<ul>
-<li>程序计数器；</li>
-<li>条件码；</li>
-<li>处理器状态位；</li>
+<li>线程切换不调用内核</li>
+<li>调度是应用程序特定的：可以选择最好的算法。</li>
+<li>ULT可运行在任何操作系统上（只需要线程库）。</li>
 </ul>
-</li>
-<li>中断码。保存程序执行时当前发生的中断事件。</li>
-<li>中断屏蔽位。指明程序执行中发生中断事件时，是否响应出现的中断事件。</li>
+<p>缺点：</p>
+<ul>
+<li>大多数系统调用是阻塞的，因此核心阻塞进程，故进程中所有线程将被阻塞。</li>
+<li>核心只将处理器分配给进程，同一进程中的两个线程不能同时运行于两个处理器上，因此不能利用多处理器优点</li>
 </ul>
-<p>在Intel x86机器中，$PSW$由标志寄存器$EFLAGS$和指针寄存器$EIP$组成，均为32位。$EFLAGS$低16位称为$FLAGS$，可以当作一个单元来处理。指令指针寄存器$EIP$的低16位称为$IP$（保护模式需使用32位），可以当作一个单元使用，存放顺序执行的下一条指令相对于当前代码段起始地址的一个偏移量。</p>
+<h4 id="内核级线程KLT"><a href="#内核级线程KLT" class="headerlink" title="内核级线程KLT"></a>内核级线程KLT</h4><p>由操作系统的内核建立、调度和管理的线程。(如Windows NT，OS/2)</p>
+<ul>
+<li>所有线程管理由内核完成</li>
+<li>没有线程库，但对内核线程工具提供API</li>
+<li>内核维护进程和线程的上下文</li>
+<li>线程之间的切换需要内核支持</li>
+<li>以线程为基础进行调度</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>对多处理器，内核可以同时调度同一进程的多个线程</li>
+<li>阻塞是在线程一级完成</li>
+<li>内核例程是多线程的</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>线程在用户态运行，而线程的调度和管理在内核实现，则在同一个进程中，控制权要想从一个线程转送到另一个线程时需要用户态-内核态-用户态模式转换，系统开销大</li>
+</ul>
+<h4 id="KLT和ULT比较"><a href="#KLT和ULT比较" class="headerlink" title="KLT和ULT比较"></a>KLT和ULT比较</h4><p><img src="3.png" style="zoom:100%;"></p>
+<h4 id="混合式线程"><a href="#混合式线程" class="headerlink" title="混合式线程"></a>混合式线程</h4><p>线程实现分为两个层次：用户级和核心级。线程创建在用户空间完成；大量线程调度和同步在用户空间完成；程序员可以调整KLT的数量；可以取两者中最好的。</p>
 
       
     </div>
@@ -570,8 +592,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/03/27/OS-操作系统概论/" rel="next" title="OS--操作系统概论">
-                <i class="fa fa-chevron-left"></i> OS--操作系统概论
+              <a href="/2020/04/02/OS-处理器管理（3）-进程及其实现/" rel="next" title="OS--处理器管理（3）_进程及其实现">
+                <i class="fa fa-chevron-left"></i> OS--处理器管理（3）_进程及其实现
               </a>
             
           </div>
@@ -579,10 +601,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/03/30/OS-处理器管理（1）-中断技术/" rel="prev" title="OS--处理器管理（2）_中断技术">
-                OS--处理器管理（2）_中断技术 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -716,7 +734,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OS—处理器管理-1-处理器状态"><span class="nav-number">1.</span> <span class="nav-text">OS—处理器管理(1)_处理器状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#处理器"><span class="nav-number">1.0.1.</span> <span class="nav-text">处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指令系统和寄存器"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">指令系统和寄存器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特权指令和非特权指令"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">特权指令和非特权指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内核态和用户态"><span class="nav-number">1.0.1.3.</span> <span class="nav-text">内核态和用户态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理器状态及其转换"><span class="nav-number">1.0.1.4.</span> <span class="nav-text">处理器状态及其转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户栈和核心栈"><span class="nav-number">1.0.1.5.</span> <span class="nav-text">用户栈和核心栈</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序状态字"><span class="nav-number">1.0.2.</span> <span class="nav-text">程序状态字</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OS—处理器管理（4）-线程及其实现"><span class="nav-number">1.</span> <span class="nav-text">OS—处理器管理（4）_线程及其实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#引入多线程的动机"><span class="nav-number">1.1.</span> <span class="nav-text">引入多线程的动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程环境中的进程和线程"><span class="nav-number">1.2.</span> <span class="nav-text">多线程环境中的进程和线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多线程"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">多线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程状态"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">线程状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程组织"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">线程组织</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程的实现"><span class="nav-number">1.3.</span> <span class="nav-text">线程的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#用户级线程ULT"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">用户级线程ULT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内核级线程KLT"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">内核级线程KLT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#KLT和ULT比较"><span class="nav-number">1.3.0.3.</span> <span class="nav-text">KLT和ULT比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#混合式线程"><span class="nav-number">1.3.0.4.</span> <span class="nav-text">混合式线程</span></a></li></ol></li></ol></div>
             
 
           </div>

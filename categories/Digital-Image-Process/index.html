@@ -5,20 +5,18 @@
   
 
   
-  <title>在linux中添加应用图标 | DongXuehui&#39;s Blog</title>
+  <title>Category: Digital Image Process | DongXuehui&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1.Desktop Entry介绍在桌面图形化的linux系统中，我们可以通过点击桌面图标打开相应的应用软件。Linux KDE 和 Linux GNOME 桌面系统都使用 Desktop Entry 文件标准来描述程序启动配置信息。我们以Linux GNOME为例来讲解如何自己构建一个桌面图标。 2.实例 建立xxx.desktop文件这些 Desktop Entry 文件通常被存放在 /us">
-<meta name="keywords" content="linux">
-<meta property="og:type" content="article">
-<meta property="og:title" content="在linux中添加应用图标">
-<meta property="og:url" content="http://dongxh.cn/2019/03/23/在linux中添加应用图标/index.html">
+  <meta name="description" content="I am willing to do anything but ordinary.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="DongXuehui&#39;s Blog">
+<meta property="og:url" content="http://dongxh.cn/categories/Digital-Image-Process/index.html">
 <meta property="og:site_name" content="DongXuehui&#39;s Blog">
-<meta property="og:description" content="1.Desktop Entry介绍在桌面图形化的linux系统中，我们可以通过点击桌面图标打开相应的应用软件。Linux KDE 和 Linux GNOME 桌面系统都使用 Desktop Entry 文件标准来描述程序启动配置信息。我们以Linux GNOME为例来讲解如何自己构建一个桌面图标。 2.实例 建立xxx.desktop文件这些 Desktop Entry 文件通常被存放在 /us">
+<meta property="og:description" content="I am willing to do anything but ordinary.">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-23T09:19:32.960Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="在linux中添加应用图标">
-<meta name="twitter:description" content="1.Desktop Entry介绍在桌面图形化的linux系统中，我们可以通过点击桌面图标打开相应的应用软件。Linux KDE 和 Linux GNOME 桌面系统都使用 Desktop Entry 文件标准来描述程序启动配置信息。我们以Linux GNOME为例来讲解如何自己构建一个桌面图标。 2.实例 建立xxx.desktop文件这些 Desktop Entry 文件通常被存放在 /us">
+<meta name="twitter:title" content="DongXuehui&#39;s Blog">
+<meta name="twitter:description" content="I am willing to do anything but ordinary.">
   
     <link rel="alternate" href="/atom.xml" title="DongXuehui&#39;s Blog" type="application/atom+xml">
   
@@ -65,65 +63,135 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-在linux中添加应用图标" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/23/在linux中添加应用图标/" class="article-date">
-  <time datetime="2019-03-23T05:26:44.000Z" itemprop="datePublished">2019-03-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+        <section id="main">
   
-    <h1 class="article-title" itemprop="name">
-      在linux中添加应用图标
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2020" class="archive-year">2020</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2020/03/26/频域滤波实验报告/" class="archive-article-date">
+  <time datetime="2020-03-26T07:25:01.000Z" itemprop="datePublished">3月 26</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2020/03/26/频域滤波实验报告/">频域滤波实验报告</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <hr>
-<h3 id="1-Desktop-Entry介绍"><a href="#1-Desktop-Entry介绍" class="headerlink" title="1.Desktop Entry介绍"></a>1.Desktop Entry介绍</h3><p>在桌面图形化的linux系统中，我们可以通过点击桌面图标打开相应的应用软件。<code>Linux KDE</code> 和 <code>Linux GNOME</code> 桌面系统都使用 <code>Desktop Entry</code> 文件标准来描述程序启动配置信息。我们以<code>Linux GNOME</code>为例来讲解如何自己构建一个桌面图标。</p>
-<h3 id="2-实例"><a href="#2-实例" class="headerlink" title="2.实例"></a>2.实例</h3><ul>
-<li>建立xxx.desktop文件<br>这些 <code>Desktop Entry</code> 文件通常被存放在 <code>/usr/share/applications/</code> <code>/opt/gnome/share/applications/</code> 等目录下。我们进入<code>/usr/share/applications/</code>，建立一个xxx.desktop文件<code>vim xxx.desktop</code><br>在文件里输入一下内容：<br><pre><code>[Desktop Entry]<br>Name=Mars4_5<br>Comment=MIPS Assembler and Runtime Simulator<br>Exec=/home/dwyane/download/Mars4_5.jar<br>Icon=/home/dwyane/download/mars.jpg<br>Terminal=false<br>Type=Application<br>Categories=Application;<br>Encoding=UTF-8
-</code><pre></pre></pre></li>
-</ul>
-<p><strong>Name</strong>   ： 是应用图标显示出来的名称。<br><strong>Comment</strong> ：是对当前DesktopEntry的描述。<br><strong>Type</strong>    ：是定义了<code>Desktop Entry</code>文件的类型。常见的”Type”数值是<code>Application</code>和<code>Link</code>。<code>Type = Application</code>表示当前<code>Desktop Entry</code>文件指向了一个应用程序；而<code>Type = Link</code>表示当前<code>Desktop Entry</code>文件指向了一个URL (Uniform Resource Locator)。<br><strong>Exec</strong> ：是只有在<code>Type</code>类型是<code>Application</code>时才有意义。<code>Exec</code>的数值定义了启动指定应用程序所要执行的命令，在此命令 是可以带参数的。<br><strong>Icon</strong>：该数值定义了当前<code>Desktop Entry</code>文件在应用程序浏览器或是在文件浏览器中所显示的图标。<br><strong>Terminal</strong>：其数值指出了相关应用程序（即关键字”Exec”的数值）是否需要在终端窗口中运行。<br><strong>Categories</strong>：只有在”Type”类型是”Application”时才有意义。<code>Categories</code>的数值指出了相关应用程序在菜单中显示的类别。</p>
-<p>更多属性可以参考<a href="https://www.ibm.com/developerworks/cn/linux/l-cn-dtef/" target="_blank" rel="noopener">龚奕平的文章</a><br>`</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2019/03/23/在linux中添加应用图标/" data-id="ck8l56qg90004tmlkkr3v2k0x" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-
-    </footer>
+    </header>
   </div>
+</article>
   
     
-<nav id="article-nav">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2020/03/25/空间域滤波器实验报告/" class="archive-article-date">
+  <time datetime="2020-03-25T08:51:24.000Z" itemprop="datePublished">3月 25</time>
+</a>
+      
   
-    <a href="/2019/03/24/线性代数知识回顾与重新理解/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          线性代数知识回顾与重新理解
-        
-      </div>
-    </a>
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2020/03/25/空间域滤波器实验报告/">空间域滤波实验报告</a>
+    </h1>
   
-  
-</nav>
 
-  
+    </header>
+  </div>
 </article>
+  
+    
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2020/03/24/图像复原/" class="archive-article-date">
+  <time datetime="2020-03-24T08:09:12.000Z" itemprop="datePublished">3月 24</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2020/03/24/图像复原/">图像复原</a>
+    </h1>
+  
+
+    </header>
+  </div>
+</article>
+  
+    
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2020/03/19/频域的图像增强/" class="archive-article-date">
+  <time datetime="2020-03-19T14:00:42.000Z" itemprop="datePublished">3月 19</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2020/03/19/频域的图像增强/">频域的图像增强</a>
+    </h1>
+  
+
+    </header>
+  </div>
+</article>
+  
+    
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2020/03/17/空间域的图像增强/" class="archive-article-date">
+  <time datetime="2020-03-17T13:32:33.000Z" itemprop="datePublished">3月 17</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2020/03/17/空间域的图像增强/">空间域的图像增强</a>
+    </h1>
+  
+
+    </header>
+  </div>
+</article>
+  
+    
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2020/03/16/数字图像处理基础与相关操作的matlab基础/" class="archive-article-date">
+  <time datetime="2020-03-16T14:56:53.000Z" itemprop="datePublished">3月 16</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2020/03/16/数字图像处理基础与相关操作的matlab基础/">数字图像处理基础与相关操作的matlab基础</a>
+    </h1>
+  
+
+    </header>
+  </div>
+</article>
+  
+  
+    </div></section>
+  
+
 
 </section>
         

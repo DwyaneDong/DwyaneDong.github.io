@@ -65,6 +65,193 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-OS-处理器管理（5）-处理器调度" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/23/OS-处理器管理（5）-处理器调度/" class="article-date">
+  <time datetime="2020-04-23T04:19:04.000Z" itemprop="datePublished">2020-04-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Operating-System/">Operating System</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/23/OS-处理器管理（5）-处理器调度/">OS--处理器管理（5）_处理器调度</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="OS—处理器管理（5）-处理器调度"><a href="#OS—处理器管理（5）-处理器调度" class="headerlink" title="OS—处理器管理（5）_处理器调度"></a>OS—处理器管理（5）_处理器调度</h1><p>知识点：</p>
+<ul>
+<li>处理器调度层次</li>
+<li>选择调度算法的原则</li>
+<li>作业管理与调度</li>
+<li>低级调度功能和类型</li>
+<li>作业调度和低级调度算法</li>
+</ul>
+<h2 id="处理器调度层次"><a href="#处理器调度层次" class="headerlink" title="处理器调度层次"></a>处理器调度层次</h2><p>可分为三级：高级调度，中级调度，低级调度</p>
+<p><strong>高级调度</strong>（high level scheduling）</p>
+<p>又称作业调度，长程调度。高级调度将控制多道程序的道数，被选择进入内存的作业越多，每个作业获得的CPU时间就越少。当有作业执行完毕并撤离时，作业调度会选择一个或者多个作业补充进入内存。此外，CPU空闲时间超过一定阈值时，系统也会引出作业调度选择后备作业。</p>
+<p><strong>中级调度</strong>（medium level scheduling）</p>
+<p>又称平衡调度，中程调度。中程调度将控制内存中容纳的进程数，并完成外存和内存中的进程对换工作。内存资源紧张，则换出暂时不能运行的进程（<strong>挂起状态</strong>）；内存资源富裕且具备运行条件，重新调回内存。</p>
+<p>起到短期均衡系统负载的作用，充分提高内存利用率和系统吞吐率。</p>
+<p><strong>低级调度</strong>（low level scheduling）</p>
+<p>又称进程/线程调度，短程调度，处理器调度。根据具体算法决定<strong>就绪队列</strong>中哪个进程/线程获得处理器。<strong>低级调度是操作系统最核心部分</strong>，其调度策略的优劣直接影响系统性能。这部分代码<strong>常驻内存</strong>。</p>
+<p>高级调度和低级调度为一般操作系统所必需（两级调度模型）。中级调度存在于功能完善的有更高效率追求的系统中（三级调度模型）。</p>
+<p><img src="1.png" style="zoom:50%;"></p>
+<p><img src="2.png" style="zoom:34.33%;"></p>
+<h2 id="选择调度算法原则"><a href="#选择调度算法原则" class="headerlink" title="选择调度算法原则"></a>选择调度算法原则</h2><p>下面五条选择调度算法原则中，前三条是面向系统的性能指标，后两条是面向用户的性能指标。</p>
+<ol>
+<li><p>资源利用率</p>
+<p>让CPU和各种资源尽可能并行工作，使得资源的利用率尽可能提高。在一定的I/O操作等待时间的比率下，运行程序的道数越多，CPU空闲时间所占的百分比越低。</p>
+</li>
+<li><p>吞吐率</p>
+<p>单位时间内，CPU处理作业的个数。显然，所处理的长作业多则吞吐率低，短作业多则吞吐率高。</p>
+</li>
+<li><p>公平性</p>
+<p>确保每个进程都能获得合理的CPU份额和其他资源份额，不会出现<strong>饥饿现象</strong>。</p>
+</li>
+<li><p>响应时间</p>
+<p>交互式进程从提交一个请求(命令)到接收到响应之间的时间间隔称响应时间。使交互式用户的响应时间尽可能短，或尽快处理实时任务。这是分时系统和实时系统衡量调度性能的一个重要指标。</p>
+</li>
+<li><p>周转时间</p>
+<p>批处理用户从作业提交给系统开始，到作业完成为止的时间间隔称作业周转时间，应使作业周转时间或平均作业周转时间尽可能短。这是批处理系统衡量调度性能的一个重要指标</p>
+</li>
+</ol>
+<p>批处理系统的调度性能用<strong>作业周转时间</strong>和<strong>带权作业周转时间</strong>来衡量。作业周转时间$t_i=t_f-t_s$(等于完成时间减去作业提交时间)。实际上也等于作业在系统中<strong>等待时间</strong>和<strong>运行时间</strong>$t_k$之和。</p>
+<p>平均作业周转时间$T=(\sum_{i=1}^nt_i)/n$ ，作业的带权周转时间为$w_i=t_i/t_k$ ，平均带权周转时间$W = \sum^n_{i=1}w_i/n$。</p>
+<p><strong>平均作业周转时间</strong>用来衡量不同调度算法对同一作业流的调度性能。</p>
+<p><strong>平均带权作业周转时间</strong>用来衡量同一调度算法对不同作业流的调度性能。</p>
+<p>举个例子：</p>
+<p><img src="4.png" style="zoom:30%;"></p>
+<p>该例子调度算法为FirstComeFirstServe,后面有介绍。</p>
+<h2 id="作业管理与调度"><a href="#作业管理与调度" class="headerlink" title="作业管理与调度"></a>作业管理与调度</h2><h4 id="作业和进程的关系"><a href="#作业和进程的关系" class="headerlink" title="作业和进程的关系"></a>作业和进程的关系</h4><p>一个作业（job）可以分为编译，链接，装载和运行四个作业步（job step）。当一个作业被作业调度选中进入内存并投入运行时，操作系统将为此用户作业生成相应的用户进程完成计算任务。进程是已提交完毕并选中运行的作业（程序）的执行实体，也是为了完成作业任务向系统申请和分配资源的基本单位。</p>
+<p>综上，<strong><u>作业是任务实体，进程是完成任务的执行实体</u>。</strong></p>
+<h4 id="作业管理与调度-1"><a href="#作业管理与调度-1" class="headerlink" title="作业管理与调度"></a>作业管理与调度</h4><h5 id="批作业的组织和管理"><a href="#批作业的组织和管理" class="headerlink" title="批作业的组织和管理"></a>批作业的组织和管理</h5><p><strong>批作业的输入</strong>：采用脱机控制方式，由SPOOLing系统成批接收并控制作业输入，并将其存放在输入井，然后在系统的管理和控制下被调度和执行。</p>
+<p><strong>批作业的建立</strong>：每个作业建立一个作业建立一个作业控制块（Job Control Block，JCB），所有的JCB组成作业表。JCB主要包括作业情况，资源需求，资源使用情况等。</p>
+<p><strong>批作业的调度</strong>：指按照某种算法从后备作业队列中选择部分作业进入内存运行，当作业运行结束时做好善后工作。1.选择任务（由作业调度算法决定）；2.分配资源；3.创建进程；4.作业控制；5.后续处理；</p>
+<p><img src="3.png" style="zoom:50%;"></p>
+<h5 id="交互式作业的组织和管理"><a href="#交互式作业的组织和管理" class="headerlink" title="交互式作业的组织和管理"></a>交互式作业的组织和管理</h5><p>分时系统的作业就是用户的一次上机交互过程，可认为终端进程的创建是一个交互型作业的开始，退出命令运行结束代表用户交互型作业的中止。</p>
+<h2 id="低级调度的功能和类型"><a href="#低级调度的功能和类型" class="headerlink" title="低级调度的功能和类型"></a>低级调度的功能和类型</h2><p>调度器（dispatcher）</p>
+<p>低级调度的主要功能：调度和分派</p>
+<ul>
+<li>调度：实现调度策略，确定就绪进程/线程竞争使用处理器的次序的裁决原则，即进程/线程何时应放弃CPU和选择哪个来执行；</li>
+<li>分派：实现调度机制，确定如何时分复用CPU，处理上下文交换细节，完成进程/线程和CPU的绑定和放弃的实际工作。</li>
+</ul>
+<p>低级调度机制由两个程序模块组成：</p>
+<ul>
+<li>排队程序</li>
+<li>分派程序</li>
+</ul>
+<p>基本类型：</p>
+<ul>
+<li>第一类—剥夺式<ul>
+<li>又称抢占式。当进程/线程正在处理器上运行时，系统可根据规定的原则剥夺分配给此进程/线程的处理器，并将其移入就绪队列，选择其他进程/线程运行。</li>
+<li>两种处理器剥夺原则：<ul>
+<li>高优先级进程/线程可剥夺低优先级进程/线程</li>
+<li>当运行进程/线程时间片用完后被剥夺。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第二类—非剥夺式<ul>
+<li>又称非抢占式。一旦某个进程/线程开始运行后便不再让出处理器，除非该进程/线程运行结束或主动放弃处理器，或因发生某个事件而不能继续执行。</li>
+</ul>
+</li>
+</ul>
+<h2 id="作业调度过程中的不同时间段"><a href="#作业调度过程中的不同时间段" class="headerlink" title="作业调度过程中的不同时间段"></a>作业调度过程中的不同时间段</h2><p><strong>Arrival Time:</strong> <em>Time at which the process arrives in the ready queue.</em>提交时间</p>
+<p><strong>Completion Time:</strong> <em>Time at which process completes its execution.</em>完成时间</p>
+<p><strong>Burst Time:</strong> <em>Time required by a process for CPU execution.</em>运行时间。</p>
+<p><strong>Turn Around Time:</strong> <em>Time Difference between completion time and arrival time.Turn Around Time = Completion Time – Arrival Time.</em>周转时间</p>
+<p><strong>Waiting Time(W.T):</strong> <em>Time Difference between turn around time and burst time.</em><br><em>Waiting Time = Turn Around Time – Burst Time</em>等待时间</p>
+<h2 id="作业调度和低级调度算法"><a href="#作业调度和低级调度算法" class="headerlink" title="作业调度和低级调度算法"></a>作业调度和低级调度算法</h2><h3 id="先来先服务算法（First-Come-First-Serve）"><a href="#先来先服务算法（First-Come-First-Serve）" class="headerlink" title="先来先服务算法（First Come First Serve）"></a>先来先服务算法（First Come First Serve）</h3><p>按照作业进入系统后备队列的先后次序来挑选作业，先进入系统的作业优先被挑选进入内存。 </p>
+<p>再次说明，周转时间等于完成时间减去提交时间，带权周转时间等于周转时间除以运行时间。</p>
+<p>FCFS算法平均周转时间与作业提交顺序有关，一般是运行时间短的先提交平均周转时间低。</p>
+<h3 id="最短作业优先算法（Shortest-Job-First"><a href="#最短作业优先算法（Shortest-Job-First" class="headerlink" title="最短作业优先算法（Shortest Job First)"></a>最短作业优先算法（Shortest Job First)</h3><p>SJF算法以进入系统的作业所要求的CPU时间为标准，总选取估计计算时间最短的作业投入运行。</p>
+<p>算法易于实现，效率不高，主要弱点是忽视了作业等待时间。会出现饥饿现象。</p>
+<p>SJF的平均作业周转时间比FCFS要小，故它的调度性能比FCFS好。</p>
+<p>实现SJF调度算法需要知道作业所需运行时间，否则调度就没有依据，要精确知道一个作业的运行时间是办不到的。</p>
+<p>估计下一个最短CPU运行时间estimate shortest next CPU burst time 的方法：</p>
+<script type="math/tex; mode=display">
+\tau_{n+1}=\alpha t_n+(1-\alpha)\tau_n</script><p>$t_n$是进程/线程最近一个CPU周期长度（最近信息），$\tau_n$是估算的第n个CPU周期值（历史信息）。</p>
+<h3 id="最短剩余时间优先算法（Shortest-Remaining-Time-First）"><a href="#最短剩余时间优先算法（Shortest-Remaining-Time-First）" class="headerlink" title="最短剩余时间优先算法（Shortest Remaining Time First）"></a>最短剩余时间优先算法（Shortest Remaining Time First）</h3><p>SRTF把SJF算法改为抢占式的。一个新作业进入就绪状态，如果新作业需要的CPU时间比当前正在执行的作业剩余下来还需的CPU时间短，SRTF强行赶走当前正在执行作业。称最短剩余时间优先算法。</p>
+<p>此算法不但适用于JOB调度，同样也适用于进程调度。</p>
+<h3 id="最高响应比优先算法（Highest-Response-Ratio-Next）"><a href="#最高响应比优先算法（Highest-Response-Ratio-Next）" class="headerlink" title="最高响应比优先算法（Highest Response Ratio Next）"></a>最高响应比优先算法（Highest Response Ratio Next）</h3><p>FCFS与SJF是片面的调度算法。FCFS只考虑作业等候时间而忽视了作业的计算时问，SJF只考虑用户估计的作业计算时间而忽视了作业等待时间。</p>
+<p>HRRN是介乎这两者之间的折衷算法，既考虑作业等待时间，又考虑作业的运行时间，既照顾短作业又不使长作业的等待时间过长，改进了调度性能。 </p>
+<p>响应比的定义：  响应比 ＝1+已等待时间/估计运行时间；</p>
+<p>短作业容易得到较高响应比，长作业等待时间足够长后，也将获得足够高的响应比，饥饿现象不会发生。</p>
+<p>HRRN算法举例：</p>
+<p>​            四个作业<strong>到达系统时间/所需CPU时间</strong>:作业1-0/20，作业2-5/15，作业3-10 /5，作业4- 15/ 10。</p>
+<ul>
+<li>SJF调度顺序为作业1、3、4、2，平均作业周转时间T=25， 平均带权作业周转时间W=2.25 。</li>
+<li>FCFS调度顺序为作业1、2、3、4，平均作业周转时间T=28.75， 平均带权作业周转时间W=3.125 。</li>
+<li>HRRF调度顺序为作业1、3、2、4，平均作业周转时间T=26.25， 平均带权作业周转时间W=2.46 。</li>
+</ul>
+<p><img src="5.png" style="zoom:30%;"></p>
+<h3 id="优先级调度算法"><a href="#优先级调度算法" class="headerlink" title="优先级调度算法"></a>优先级调度算法</h3><p>优先级通常用0～4095的整数表示，这些整数称为优先数。Linux中优先数越小吗，优先级越高，有些系统则相反。</p>
+<ul>
+<li>静态优先数法</li>
+</ul>
+<p><img src="6.png" style="zoom:50%;"></p>
+<ul>
+<li>动态优先数法<ol>
+<li>根据<strong>进程占有CPU时间</strong>多少来决定,当进程占有CPU时间愈长,那么，在它被阻塞之后再次获得调度的优先级就越低，反之,进程获得调度的可能性越大;</li>
+<li>根据<strong>进程等待CPU时间</strong>多少来决定,当进程在就绪队列中等待时间愈长,那么，在它被阻塞之后再次获得调度的优先级就越高，反之,进程获得调度的可能性越小。</li>
+</ol>
+</li>
+</ul>
+<h3 id="时间片轮转调度算法（Round-Robin）"><a href="#时间片轮转调度算法（Round-Robin）" class="headerlink" title="时间片轮转调度算法（Round Robin）"></a>时间片轮转调度算法（Round Robin）</h3><p>时间片调度：调度程序每次把CPU分配给就绪队列首进程使用一个时间片，例如100ms，就绪队列中的每个进程轮流地运行一个时间片。当这个时间片结束时，强迫一个进程让出处理器，让它排列到就绪队列的尾部，等候下一轮调度。</p>
+<p>轮转策略可防止那些很少使用外围设备的进程过长的占用处理器而使得要使用外围设备的那些进程没有机会去启动外围设备。</p>
+<ul>
+<li>时间片长度的确定<ul>
+<li>时间片长度变换的影响<ul>
+<li>过长：退化为FCFS算法，进程在一个时间片内都执行完，响应时间长。</li>
+<li>过短：大多数进程/线程都不能在一个时间片内运行完成，上下文切换次数增加，响应时间长。</li>
+</ul>
+</li>
+<li>对响应时间的要求<ul>
+<li>T(响应时间)=N(进程数目)*q(时间片)</li>
+</ul>
+</li>
+<li>时间片长度的影响因素<ul>
+<li>就绪进程的数目：数目越多，时间片越小（当响应时间一定时）</li>
+<li>系统的处理能力：应当使用户输入通常在一个时间片内能处理完，否则使响应时间，平均周转时间和平均带权周转时间延长。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="多级反馈队列调度算法（Multi-Level-Feedback-Queue，MLFQ）"><a href="#多级反馈队列调度算法（Multi-Level-Feedback-Queue，MLFQ）" class="headerlink" title="多级反馈队列调度算法（Multi-Level Feedback Queue，MLFQ）"></a>多级反馈队列调度算法（Multi-Level Feedback Queue，MLFQ）</h3><p>又称反馈循环队列或多队列策略。主要思想是：由系统建立多个就绪队列，每个队列对应于一个优先级，第一个队列的优先级最高，第二个其次，优先级逐个降低。较高优先级队列的进程/线程分配较短的时间片，较低优先级相反，最后一个队列进程/线程按照FCFS算法原则排队。</p>
+<p>处理器调度先从高级就绪进程队列中选取可占有处理器的进程，只有在选不到时，才从较低级的就绪进程队列中选取。</p>
+<p><img src="7.png" style="zoom:50%;"></p>
+<p>该算法有较好的性能，能满足各类应用需要。</p>
+<p>但是MLFQ调度算法会导致“饥饿”问题。假如有一个长作业进入系统，它最终必将移入优先级最低的就绪队列，若其后有源源不断的短作业进入系统，且形成稳定的作业流，则长作业一直等待，陷入“饥饿”状态。解决问题的一种有效方法是对于低优先级的队列中等待时间足够长的进程提升其优先级。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dongxh.cn/2020/04/23/OS-处理器管理（5）-处理器调度/" data-id="ck9c9ft0j001exzlkrqt8hc72" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-OS-处理器管理（4）-线程及其实现" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/04/03/OS-处理器管理（4）-线程及其实现/" class="article-date">
@@ -174,7 +361,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2020/04/03/OS-处理器管理（4）-线程及其实现/" data-id="ck8l56qhj000htmlktjf1639u" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2020/04/03/OS-处理器管理（4）-线程及其实现/" data-id="ck9c9fsxv000lxzlkou2sim9a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
@@ -367,7 +554,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2020/04/02/OS-处理器管理（3）-进程及其实现/" data-id="ck8l56qju000ytmlk2l2hj39p" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2020/04/02/OS-处理器管理（3）-进程及其实现/" data-id="ck9c9ft0c001cxzlkzyjbct2m" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
@@ -529,7 +716,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2020/03/30/OS-处理器管理（1）-中断技术/" data-id="ck8l56qjp000wtmlkjug8xfq1" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2020/03/30/OS-处理器管理（1）-中断技术/" data-id="ck9c9ft0b001axzlkmetcubqj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
@@ -632,7 +819,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2020/03/28/OS-处理器管理（1）-处理器状态/" data-id="ck8l56qhf000etmlkvxxsy76h" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2020/03/28/OS-处理器管理（1）-处理器状态/" data-id="ck9c9fsxp000gxzlkevr1delr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
@@ -867,7 +1054,7 @@ Utilization \ of\ CPU = 1-p^n</script><p>​        其中n称为多道程序的
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2020/03/27/OS-操作系统概论/" data-id="ck8l56qn50014tmlkju5a83sl" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2020/03/27/OS-操作系统概论/" data-id="ck9c9ft33001mxzlkp7p898tf" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
@@ -947,7 +1134,7 @@ H_{hfe}(u,v)=a+bH_{hp}(u,v)</script><p>a是偏移量，b是乘数，$H_{hp}(u,v)
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2020/03/26/频域滤波实验报告/" data-id="ck8l56qhc000dtmlktots6f44" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2020/03/26/频域滤波实验报告/" data-id="ck9c9fsxj000fxzlk1a3yvv72" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数字图像处理/">数字图像处理</a></li></ul>
@@ -1029,7 +1216,7 @@ H_{hfe}(u,v)=a+bH_{hp}(u,v)</script><p>a是偏移量，b是乘数，$H_{hp}(u,v)
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2020/03/25/空间域滤波器实验报告/" data-id="ck8l56qh6000atmlk0hm3ne19" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2020/03/25/空间域滤波器实验报告/" data-id="ck9c9fsx9000bxzlk9wiihqa5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数字图像处理/">数字图像处理</a></li></ul>
@@ -1379,7 +1566,7 @@ B=C_1*A_1+C_2*A_2+...+C_k*A_k</script><figure class="highlight matlab"><table><t
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2020/03/24/图像复原/" data-id="ck8l56qpz0018tmlk3iiocvji" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2020/03/24/图像复原/" data-id="ck9c9ft68001rxzlk6fenln0a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数字图像处理/">数字图像处理</a></li></ul>
@@ -1585,261 +1772,7 @@ H_{hfe}(u,v)=a+bH_{hp}(u,v)</script><p>a是偏移量，b是乘数，$H_{hp}(u,v)
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2020/03/19/频域的图像增强/" data-id="ck8l56qn40013tmlkezicxh09" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数字图像处理/">数字图像处理</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-空间域的图像增强" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/03/17/空间域的图像增强/" class="article-date">
-  <time datetime="2020-03-17T13:32:33.000Z" itemprop="datePublished">2020-03-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Digital-Image-Process/">Digital Image Process</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/17/空间域的图像增强/">空间域的图像增强</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="空间域的图像增强"><a href="#空间域的图像增强" class="headerlink" title="空间域的图像增强"></a>空间域的图像增强</h1><h2 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h2><ol>
-<li><p>什么是图像增强？</p>
-<p>图像增强是要突出图像中的某些信息，同时削弱或去除某些不需要信息的一种处理方法，以得到对具体应用 来说视觉效果更“好”，或更“有用”的图像的技术。</p>
-</li>
-<li><p>为什么要图像增强？</p>
-<p>图像在传输或者处理过程中会引入噪声或使图像变模糊，从而降低了图像质量，甚至淹没了特征，给分析带来 了困难。</p>
-</li>
-<li><p>图像增强的目的：</p>
-<p>(1)改善图像的视觉效果，提高图像的清晰度;</p>
-<p>(2)将图像转换成更适合于人眼观察和机器分析识别的形式，以便从图像中获取更有用的信息。</p>
-</li>
-<li><p>基本方法</p>
-<p><img src="1.png" style="zoom: 33%;">、</p>
-</li>
-</ol>
-<h3 id="基本灰度变换"><a href="#基本灰度变换" class="headerlink" title="基本灰度变换"></a>基本灰度变换</h3><ol>
-<li><p>对数变换</p>
-<p>$s = c\ log(1+r)$，$c$为常数，</p>
-<p><strong>作用</strong>：用来扩展被压缩的高值图像中的暗像素。</p>
-<p><strong>缺点</strong>：很大程度上压缩了图像像素的动态范围。</p>
-<p>一般应用：压缩傅立叶变换的动态范围等。</p>
-</li>
-<li><p>幂次变换</p>
-<p>$s=c\ r^{\gamma}$，$c$为常数。</p>
-<p><strong>作用</strong>：$\gamma<1$时，把低亮度进行拉伸（因为原图片需要的细节大多在暗处，需要仔细分辨）；$\gamma>1$时，把高亮度进行拉伸（因为原图片需要的细节大多在亮处，需要把亮处拉长范围观察）；</1$时，把低亮度进行拉伸（因为原图片需要的细节大多在暗处，需要仔细分辨）；$\gamma></p>
-<p><img src="2.png" style="zoom: 33%;"></p>
-<p><strong>伽马校正</strong>：几乎所有的CRT显示设备、摄像胶片、许多电子照相机的 光电转换特性都是非线                                                   性的。所以，如果不进行校正处理的话 ，将无法得到好的图像效果。</p>
-</li>
-<li><p>图像反转</p>
-<p>$s=L-1-r$，$L$为亮度级（灰度级）</p>
-<p><strong>作用</strong>：适于处理增强嵌入于图像暗色区域的白色或灰色细节,特别是当黑色面积占主导地位时。</p>
-</li>
-<li><p>分段线性变换</p>
-<p>其形式可以任意组合，有些重要的变换可以应 用分段线性函数描述。</p>
-<p>（1）对比拉伸：扩展图像处理时某范围灰度级的动态范围<img src="3.png" style="zoom: 25%;">，如图，可以选择性的拉伸$[r_1,r_2]$范围的动态范围到$[s_1,s_2]$范围</p>
-<p>（2）突出图像中特定灰度范围的<strong>亮度</strong>，可以增强某些特征；</p>
-<p>突出目标轮廓，<strong>消除</strong>背景细节：<img src="4.png" style="zoom: 25%;"></p>
-<p>突出目标轮廓，<strong>保留</strong>背景细节：<img src="5.png" style="zoom:25%;"></p>
-<p>（3）<strong>比特平面分割</strong>:把数字图像分解成为<strong>位平面</strong>，高阶位如前4位包含视觉上很重要的大多数数据;其它位对图像中 的更多微小细节有作用。</p>
-<p><img src="6.png" style="zoom: 33%;"></p>
-</li>
-</ol>
-<p>   该图为比特面分层的实例：</p>
-<p>   <img src="7.png" style="zoom:50%;"></p>
-<h3 id="直方图处理"><a href="#直方图处理" class="headerlink" title="直方图处理"></a>直方图处理</h3><p><strong>灰度直方图</strong>：灰度级的函数，描述的是图像中具有该灰度级的像素的个数。</p>
-<p>​        横轴表示灰度级，纵轴表示每一灰度级具有的像素数或该像素数占总像素数的比例值，做出的条形统计图即为灰度直方图。</p>
-<p><strong>直方图意义</strong>：</p>
-<ul>
-<li><p>反应图像的灰度分布情况</p>
-<ul>
-<li>低端分布的直方图，图象较暗</li>
-<li>高端分布的直方图，图象太亮</li>
-<li>直方图分布狭窄，图象对比度不够</li>
-<li>直方图的多个峰值，一般对应多类目标</li>
-</ul>
-</li>
-<li><p>指出图象增强处理的方向</p>
-<ul>
-<li><p>直方图的均衡化</p>
-<p>均匀分布的直方图，扩大动态范围，增大图象对比度</p>
-</li>
-<li><p>直方图的规定化</p>
-<p>符合特定分布的直方图，有目的地增强感兴趣目标</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>应用于图像增强技术，图像压缩及分割。</p>
-<p>一般会对直方图进行归一化操作。</p>
-<p><strong>直方图均衡化</strong>：</p>
-<p>中心思想：是把原始图像的灰度直方图从比较集中的某个灰度区 间变成在全部灰度范围内的均匀分布。是对图像的非线性拉伸。</p>
-<p>• 变换原始图像的直方图为均匀分布</p>
-<p>​           ==&gt; 增大动态范围<br> • 使像素灰度值的动态范围最大</p>
-<p>​           ==&gt; 增强图像整体对比度(反差)</p>
-<ul>
-<li><strong>优点</strong>：对于背景和前景都太亮或者太暗的图像非常有用；如X光图像的骨骼结构显示、以及曝光过度或者曝光不足照片中更好的细节。</li>
-<li><strong>缺点</strong>：对处理的数据不加选择，可能会降低有用信号的对比度; 变换后图像的灰度级减少，某些细节消失; 某些图像，如直方图有高峰，经处理后对比度不自然的过分增强。</li>
-</ul>
-<p><strong>直方图规定化</strong>：</p>
-<p>目的：将原始图象的直方图转换为期望的直方图的形状</p>
-<p>算法思想:</p>
-<p>– 设:$\{r_k\}$是原图象的灰度级,<br>         • $\{z_k\}$是符合指定直方图结果图象的灰度级</p>
-<p>– 目标:找到一个灰度级变换函数$T$,使: </p>
-<p>  (1)$z_k=T(r_k)$     $r\to z$ </p>
-<p>​         (2)从概率密度函数(直方图)入手</p>
-<p><strong>直方图规定化vs. 直方图均衡化</strong></p>
-<ul>
-<li><p>直方图均衡化: 自动增强</p>
-<p>• 效果不易控制</p>
-<p>• 总得到全图增强的结果</p>
-</li>
-<li><p>直方图规定化: 有选择地增强</p>
-<p>• 须给定需要的直方图 </p>
-<p>• 可特定增强的结果</p>
-</li>
-</ul>
-<h3 id="空间滤波基础"><a href="#空间滤波基础" class="headerlink" title="空间滤波基础"></a>空间滤波基础</h3><p>空间滤波器的通用实现方法———邻域加权运算（掩模运算）</p>
-<p>空间滤波计算公式（掩模计算公式）：</p>
-<script type="math/tex; mode=display">
-g(x)=\sum_{s=-a}^{a}w(s)f(x+s)</script><p><img src="8.png" style="zoom: 40%;"></p>
-<p>在空间借助模版进行滤波操作有两个分类标准：</p>
-<ul>
-<li>线性/非线性</li>
-<li>平滑/锐化</li>
-</ul>
-<h3 id="平滑滤波器"><a href="#平滑滤波器" class="headerlink" title="平滑滤波器"></a>平滑滤波器</h3><p>原理：</p>
-<ul>
-<li>减弱或消除高频分量，保留低频分量</li>
-<li>平滑处理往往用于图像分割之前，因为它可以去除噪声也可以填补图像边缘中的间隙，有利于从图像中找出目标。</li>
-</ul>
-<p>算法设计：</p>
-<ul>
-<li>平滑的主要目标是去除噪声</li>
-<li>平滑的附加要求是保护图像信息的细节</li>
-</ul>
-<p><strong>均值滤波器</strong>：<img src="9.png" style="zoom: 33%;">  <strong>加权均值滤波器</strong>：<img src="10.png" style="zoom:33%;"> </p>
-<p>模板尺寸越大，图像越模糊，图像细节丢失越多。</p>
-<p>平滑处理的应用:在提取大目标前，去除图像中一些琐碎的细节，“有所失才能 有所得”。</p>
-<p><strong>高斯滤波器(Gaussian Filters)</strong>:</p>
-<p>– 采用高斯函数作为加权函数。$G(x,y)=e^{-\frac{x^2+y^2}{2\sigma^2}}=e^{-\frac{r^2}{2\sigma^2}}$ </p>
-<p>– 原因一:二维高斯函数具有旋转对称性，保证滤波时各方向平滑 程度相同;</p>
-<p>– 原因二:离中心点越远权值越小。确保边缘细节不被模糊。</p>
-<p>设计高斯滤波器的方法：</p>
-<ol>
-<li>设定$\sigma^2$和$n$的值</li>
-<li>整数画和归一化</li>
-</ol>
-<p><strong>平滑滤波的边缘保持</strong>：</p>
-<ul>
-<li><p>带门限的邻域平均：</p>
-<p>思想：有噪声就进行滤波平均，没有噪声则不进行处理</p>
-</li>
-</ul>
-<script type="math/tex; mode=display">
-g(m,n)=\left\{\begin{matrix}
-\frac{1}{N}\sum_{(i,j)\in S}f(i,j),&\left | f(m,n)-\frac{1}{N}\sum_{(i,j)\in S}f(i,j) \right | >T\\ 
- f(m,n),& other
-\end{matrix}\right.</script><ul>
-<li><p>半邻域平均</p>
-<p>思想：判断邻域中有无边缘，没有边缘，可以不担心细节信息被平滑，被处理像素灰度采用全邻域均值；否则，根据邻域中的目 标信息为被处理像素赋值。</p>
-<p>如何判断边缘是否存在（<strong>边缘检测</strong>）：</p>
-<p>​    –邻域中8个邻点像素分为2组，灰度值小的3个A组，其他B组 </p>
-<p>​    –两组之间灰度差别大，认为有边缘，否则无边缘</p>
-<p>算法：</p>
-<p>​    –对P点的邻点$A_i$灰度排序，分为A、B两组 <img src="12.png" style="zoom:35%;"></p>
-<p>​    –计算A组均值$M_3$，B组加P点均值$M_6$和全邻域均值$N$</p>
-<p>​    –根据预设门限$T$，被处理像素的新灰度为$g(m,n)=\left\{\begin{matrix}<br>N,&amp;\left |M_6-M_3\right | \leqslant T\\<br> M_6,&amp; \left |M_6-M_3\right | &gt; T<br>\end{matrix}\right.$  </p>
-</li>
-</ul>
-<p><strong>统计排序滤波器</strong>：</p>
-<p>​        非线性空间滤波器，其响应是基于图像滤波器所包围区域中像素(灰度)的排序，用排序结果的值代替中心像素的值。</p>
-<p>​        常见的如<strong>中值滤波器</strong>，该滤波器对脉冲噪声特有效。</p>
-<h3 id="锐化滤波器"><a href="#锐化滤波器" class="headerlink" title="锐化滤波器"></a>锐化滤波器</h3><p>原理：</p>
-<ul>
-<li>减弱或消除低频分量，保留高频分量， 又称高通滤波器</li>
-</ul>
-<p>目的：</p>
-<ul>
-<li>突出图像中细节或被模糊的细节(灰度过渡部分)， 锐化可用微分来完成，而微分算子的响应强度与图像在该点的突变程度有关。</li>
-</ul>
-<p>一阶微分滤波器：Roberts梯度算子，Sobel梯度算子，Prewitt梯度算子等；</p>
-<p>拉普拉斯微分算子，二阶微分滤波器：<img src="13.png" style="zoom:33%;"></p>
-<p>实现方式：最终图像=通过掩模处理的图像+原图像</p>
-<p>掩模在中心处加1，等于最终模版；</p>
-<h2 id="Matlab实现"><a href="#Matlab实现" class="headerlink" title="Matlab实现"></a>Matlab实现</h2><h3 id="灰度转换"><a href="#灰度转换" class="headerlink" title="灰度转换"></a>灰度转换</h3><p>Spatial Filtering————————-空间滤波（neighborhood processing or spatial convolution，领域处理或空间卷积）</p>
-<p>fuzzy image processing———模糊图像处理</p>
-<p>g(x,y)= T[f(x,y)]，f为输入，g为输出</p>
-<p>T是在关于点（x，y）的<strong>指定邻域</strong>上定义的f上的算子。</p>
-<p><strong>Intensity Transformation Functions灰度转换方程</strong></p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">g = imadjust(f, [low_in high_in] , [low_out high_out] , <span class="built_in">gamma</span>);<span class="comment">%幂律（伽马）变换  Using the empty matrix ( [ J ) for [ low_in high_in ] or for [ low_out high_out ] results in the default values [ 0 1 ] . If high_out is less than low_out, the output intensity is reversed.</span></span><br><span class="line"></span><br><span class="line">g = imcomplement(f);<span class="comment">%This MATLAB function computes the complement of the image I and returns the result in J.补数，负片</span></span><br><span class="line"></span><br><span class="line">Low_High = stretchlim(f);<span class="comment">%strechlim，找到对比度拉伸图像的极限，目的是增强对比度</span></span><br><span class="line"><span class="comment">%%一般用法%%</span></span><br><span class="line">g = imadjust(f, stretchlim(f), [ ]);</span><br><span class="line"></span><br><span class="line">Low_High = stretchlim(f, tol)<span class="comment">%tol 是饱和度，可以是一个向量 [low_frac high_frac]，也可以是一个标量，low_frac = tol, and high_frac = 1 - low_frac；tol defaults to [0.01 0.99]；</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%%%对数变换和对比度拉伸%%%</span></span><br><span class="line"><span class="comment">%Logarithmic and Contrast-Stretching Transformations%</span></span><br><span class="line">g = c*<span class="built_in">log</span>(<span class="number">1</span> + f);<span class="comment">%对数变换</span></span><br><span class="line"></span><br><span class="line">gs = im2uint8(mat2gray(g) );<span class="comment">%Using mat2gray brings the values to the range [O, 1] and using im2uint8 brings them to the range [O, 255], converting the image to class uint8.</span></span><br></pre></td></tr></table></figure>
-<p>contrast-stretching transformation function对比度拉伸方程</p>
-<p><img src="14.png" style="zoom: 50%;"><img src="15.png" style="zoom: 50%;"></p>
-<p>E控制斜率，<code>g = 1./(1 + (m./f).^E)</code></p>
-<p>thresholding function阈值方程（对于图像分割很方便）</p>
-<p><img src="16.png" style="zoom: 50%;"></p>
-<p><strong>Specifying Arbitrary Intensity Transformations指定任意强度转换</strong></p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">linspace</span>(x1,x2,N);<span class="comment">%从x1开始，x2结束，中间线性插值N个点，返回插值数组（行向量）</span></span><br><span class="line"><span class="built_in">numel</span>(A);<span class="comment">%返回元素个数</span></span><br><span class="line"></span><br><span class="line">yi= interp1(x,y,xi,<span class="string">'method'</span>);<span class="comment">%其中x，y为插值点，yi为在被插值点xi处的插值结果；x,y为向量,'method'表示采用的插值方法，MATLAB提供的插值方法有几种： 'nearest'是最邻近插值， 'linear'线性插值； 'spline'三次样条插值； 'pchip'立方插值．缺省时表示线性插值</span></span><br><span class="line"></span><br><span class="line">g = interp1(z, T, f);<span class="comment">%f是输入图像, g是输出头像, T灰度级的列向量, z和T是长度一样的列向量</span></span><br><span class="line">z = <span class="built_in">linspace</span>(O, <span class="number">1</span>, <span class="built_in">numel</span>(T))‘;<span class="comment">%意思为在0到1范围内线性插值255个</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">%任意强度变换的关键在于任意变换函数T（r）</span></span><br><span class="line"><span class="comment">%T（r）可以取任意离散值来映射，z是原像，T(r)是像，线性按顺序映射</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%</span></span><br></pre></td></tr></table></figure>
-<p><strong>一些对于灰度转换有用方程</strong></p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = nargin;</span><br><span class="line">b = nargout;<span class="comment">%输入输出的参数个数</span></span><br></pre></td></tr></table></figure>
-<p><strong>Histogram Processing and Function Plotting</strong></p>
-<p><img src="17.png" alt="image-20200312211016391" style="zoom: 67%;"></p>
-<p>r~k~是第k级灰度值，n~k~是图像中灰度为r~k~的像素的个数。</p>
-<p>通常用乘积MN表示图像像素的个数，M和N分别表示图像的行和列的维数。</p>
-<p>归一化后的直方图由<img src="18.png" alt="image-20200312211749614" style="zoom: 67%;"></p>
-<p>　</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">h = imhist(f, b);<span class="comment">%b表示讲直方图分成b个部分,b默认256</span></span><br><span class="line">p = imhist(f, b)/<span class="built_in">numel</span>(f);</span><br></pre></td></tr></table></figure>
-<p><strong>Histogram Equalization直方图均衡化</strong></p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">g = histeq(f, nlev);<span class="comment">%nlev为输出图像指定的灰度级数，函数中nlev默认为64</span></span><br><span class="line"></span><br><span class="line">cdf = cumsum(A);<span class="comment">%累加和</span></span><br></pre></td></tr></table></figure>
-<p><strong>直方图匹配（规定化）</strong></p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g = histeq(f, hspec);<span class="comment">%hspec为指定的直方图（一个由指定值构成的行向量）</span></span><br></pre></td></tr></table></figure>
-<h3 id="空间滤波"><a href="#空间滤波" class="headerlink" title="空间滤波"></a>空间滤波</h3><p>工具箱使用imfilter函数来实现<strong>线性空间滤波</strong>：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">%  f为输入图像， w为滤波掩模， g为滤波结果</span></span><br><span class="line"><span class="comment">%  filtering_mode用于指定滤波过程中使用的是相关（'corr'）还是卷积（'conv'）</span></span><br><span class="line"><span class="comment">%  boundary_optiony用于处理边界充零问题，边界的大小由滤波器掩模决定</span></span><br><span class="line"><span class="comment">%  size_option可以是same，或者是full</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line">g = imfilter(f, w, filtering_mode, boundary_options, size_option);</span><br><span class="line"><span class="comment">%imfilter会讲输出图像转化为输入图像相同的类</span></span><br></pre></td></tr></table></figure>
-<p><img src="19.png" style="zoom:60%;"></p>
-<p><strong>非线性滤波器</strong></p>
-<p>在非线性滤波处理中，掩模的概念并不流行。滤波器应该看作是一个基于领域像素操作的非线性函数，其函数结果组成了领域中心像素处操作的响应。</p>
-<p>工具箱提供两个执行常规非线性滤波的函数nlfilter和函数colfilter.</p>
-<p>nlflter函数直接执行二维操作；</p>
-<p>colfilter函数以列的形式组织数据；内存占用多，但是速度快，所以<strong>常用这个函数</strong>。</p>
-<p>colfilter函数的计算过程：</p>
-<p><img src="20.png" style="zoom:60%;"></p>
-<p>$\ast \ \ A$总共有mn行，但列数可根据输入的尺寸变化，尺寸的选择由colfilter自动完成。</p>
-<p>语法：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">%		m,n为滤波区域的维数</span></span><br><span class="line"><span class="comment">%		'sliding'表示处理过程是在输入图像f中中逐个像素地滑动该m*n区域</span></span><br><span class="line"><span class="comment">%		@fun表示这里需要一个函数，fun必须对矩阵A的每一列操作，并返回一个包含所有列向量结果的行向量</span></span><br><span class="line"><span class="comment">%		parameters表示fun可能需要的参数，用逗号隔开</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line">g = colfilter(f, [m n], <span class="string">'sliding'</span>, @fun, parameters);</span><br></pre></td></tr></table></figure>
-<p>在使用colfilter滤波前，需要对图像进行填充，使用padarray函数进行填充</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">%		[r c]用于给出填充f的行数和列数</span></span><br><span class="line"><span class="comment">%		</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line">fp = padarray(f, [r c], method, direction);</span><br></pre></td></tr></table></figure>
-<p><img src="21.png" style="zoom:60%;"></p>
-<p>生成滤波掩模w的函数fspecial为：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w = fspecial( <span class="string">'type'</span> , parameters)；<span class="comment">%针对线性空间滤波器</span></span><br></pre></td></tr></table></figure>
-<p><img src="22.png" style="zoom:50%;"></p>
-<p><strong>统计排序滤波器</strong></p>
-<p>函数ordfilt2</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%使用邻域的一组排序元素中的第order个元素来代替f中的每一个元素，而该邻域是由domain中非零元素指定的</span></span><br><span class="line">g = ordfilt2(f, order, domain);</span><br><span class="line"></span><br><span class="line"><span class="comment">%中值滤波器</span></span><br><span class="line"><span class="comment">%padpot表示填充方式，zeros(默认),symmetric,indexed.</span></span><br><span class="line">g = medfilt2(f, [m n] , padopt)；</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2020/03/17/空间域的图像增强/" data-id="ck8l56qjn000vtmlkbuf54ter" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2020/03/19/频域的图像增强/" data-id="ck9c9ft32001lxzlkeukgcp3s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数字图像处理/">数字图像处理</a></li></ul>
@@ -1886,7 +1819,7 @@ g(m,n)=\left\{\begin{matrix}
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/life-record/" style="font-size: 10px;">life record</a> <a href="/tags/linear-algebra/" style="font-size: 10px;">linear algebra</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/操作系统/" style="font-size: 16.67px;">操作系统</a> <a href="/tags/数字图像处理/" style="font-size: 20px;">数字图像处理</a>
+      <a href="/tags/life-record/" style="font-size: 10px;">life record</a> <a href="/tags/linear-algebra/" style="font-size: 10px;">linear algebra</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/操作系统/" style="font-size: 20px;">操作系统</a> <a href="/tags/数字图像处理/" style="font-size: 20px;">数字图像处理</a>
     </div>
   </div>
 
@@ -1908,6 +1841,10 @@ g(m,n)=\left\{\begin{matrix}
       <ul>
         
           <li>
+            <a href="/2020/04/23/OS-处理器管理（5）-处理器调度/">OS--处理器管理（5）_处理器调度</a>
+          </li>
+        
+          <li>
             <a href="/2020/04/03/OS-处理器管理（4）-线程及其实现/">OS--处理器管理（4）_线程及其实现</a>
           </li>
         
@@ -1921,10 +1858,6 @@ g(m,n)=\left\{\begin{matrix}
         
           <li>
             <a href="/2020/03/28/OS-处理器管理（1）-处理器状态/">OS--处理器管理（1）_处理器状态</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/27/OS-操作系统概论/">OS--操作系统概论</a>
           </li>
         
       </ul>

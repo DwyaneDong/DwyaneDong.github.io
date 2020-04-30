@@ -65,6 +65,212 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-频域的图像增强" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/19/频域的图像增强/" class="article-date">
+  <time datetime="2020-03-19T14:00:42.000Z" itemprop="datePublished">2020-03-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Digital-Image-Process/">Digital Image Process</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/19/频域的图像增强/">频域的图像增强</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="频域的图像增强"><a href="#频域的图像增强" class="headerlink" title="频域的图像增强"></a>频域的图像增强</h1><h2 id="理论基础"><a href="#理论基础" class="headerlink" title="理论基础"></a>理论基础</h2><h3 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h3><ul>
+<li>一维离散傅里叶变换及反变换  <script type="math/tex; mode=display">
+F(u)= \sum_{x=0}^{M-1}f(x)e^{-j2\pi ux/M}</script></li>
+</ul>
+<script type="math/tex; mode=display">
+f(x)=\frac{1 }{M}\sum_{u=0}^{M-1}F(u)e^{j2\pi ux/M}</script><ul>
+<li>二维离散傅里叶变换及反变换<script type="math/tex; mode=display">
+F(u,v)= \sum_{x=0}^{M-1} \sum_{y=0}^{N-1} f(x,y)e^{-j2\pi (ux/M+vy/N)}</script></li>
+</ul>
+<script type="math/tex; mode=display">
+f(x,y)=\frac{1 }{MN}\sum_{u=0}^{M-1} \sum_{v=0}^{N-1}F(u,v)e^{j2\pi (ux/M+vy/N)}</script><p><strong>二维傅里叶变换的性质</strong></p>
+<p>1.平移特性</p>
+<script type="math/tex; mode=display">
+f(x-x_0,y-y_0)\Leftrightarrow F(u,v)e^{j2\pi (ux_0/M+vy_0/N)}\ \ \ \ \ \ \ \ (1)</script><script type="math/tex; mode=display">
+f(x,y)e^{j2\pi (u_0x/M+v_0y/N)}\Leftrightarrow F(u-u_0,v-v_0)\ \ \ \ \ \ \ \ (2)</script><p>公式(1)表明了对原图进行平移操作，其傅里叶变换的幅值不变。</p>
+<p>公式(2)表明了将原图乘以一个指数项，等于将其频域图平移。</p>
+<p>利用这一性质我们可以对图像进行<strong>原点平移</strong>，通常我们将傅里叶变换的后的图像原点放置在坐标系中的中心位置，即(M/2,N/2)。则$u_0=M/2,v_0=N/2$，得到图像函数所乘的指数项为$(-1)^{x+y}$.</p>
+<script type="math/tex; mode=display">
+f(x,y)(-1)^{x+y}\Leftrightarrow F(u-M/2,v-N/2)</script><p>2.旋转性</p>
+<p>引入极坐标：$x=r\ cos\theta,\ y=r\ sin\theta,u=\omega\ cos\varphi,v=\omega\ sin\varphi$ .</p>
+<script type="math/tex; mode=display">
+f(r,\theta +\theta _0)\Leftrightarrow F(\omega ,\varphi +\theta _0)\ \ \ \ \ \ \ \ (3)</script><p>公式(3)表明$f(x,y)$转过同样的角度，$F(u,v)$也转过同样的角度，反正亦然。</p>
+<p>3.周期性</p>
+<p>类似于循环位移性质，不过是二维的。</p>
+<p>4.共轭对称性</p>
+<p>傅里叶变换的频率谱是关于原点对称的。</p>
+<p>5.分离性</p>
+<script type="math/tex; mode=display">
+F(u,v)=\frac{1}{M}\sum_{x=0}^{M-1}e^{-j2\pi ux/M}\frac{1}{N}\sum_{y=0}^{N-1}f(x,y)e^{-j2\pi vy/N}</script><script type="math/tex; mode=display">
+\ \ \ =F(u,v)=\frac{1}{M}\sum_{x=0}^{M-1}e^{-j2\pi ux/M}F(x,v)</script><p><strong>快速傅里叶变换</strong></p>
+<p>FFT与原始算法的计算量之比为$log_2M/M$。</p>
+<p>​        1.在运用FFT时，通常需要把图像扩展到$2^n$大小；</p>
+<p>​        2.在做两幅图像的卷积或者相关性运算时，如果两幅图片大小不一致（即两个函数周期不一致），也需要扩展尺寸较小的那一幅图像。</p>
+<h3 id="频率域滤波基础"><a href="#频率域滤波基础" class="headerlink" title="频率域滤波基础"></a>频率域滤波基础</h3><p>一般来说，低频分量对应图像中变化慢的区域，而高频分量对应图像中灰度变化快的区域（边缘，噪声等）。</p>
+<p>频率域滤波的步骤：</p>
+<ol>
+<li>$(-1)^{x+y}$乘以原图像</li>
+<li>$DFT$</li>
+<li>$H(u,v)\times F(u,v)$</li>
+<li>$IDFT$</li>
+<li>实部</li>
+<li>用$(-1)^{x+y}\times$(5)的结果</li>
+</ol>
+<p><img src="1.png" style="zoom: 67%;"></p>
+<p>为什么要取实部呢？如果输入图像和滤波函数都是实数函数，那么理想情况下，滤波后的反傅里叶变换的虚部应该是0.但是，由于傅里叶变换计算上的舍入等误差，反傅里叶变换一般有寄生的虚部成分，不过这些虚部成分可以忽略。</p>
+<h3 id="平滑的频率域滤波器（低通）"><a href="#平滑的频率域滤波器（低通）" class="headerlink" title="平滑的频率域滤波器（低通）"></a>平滑的频率域滤波器（低通）</h3><p><strong>平滑滤波器</strong>：一般指的就是低通滤波器，将高频分量抑制来实现平滑滤波。</p>
+<p>应用：可以用于平滑处理，如图像由于量化不足（灰度分辨率不够）时产生的虚假轮廓。同时可以用于去除噪声。</p>
+<h4 id="理想低通滤波器"><a href="#理想低通滤波器" class="headerlink" title="理想低通滤波器"></a><strong>理想低通滤波器</strong></h4><p><strong>（Ideal Lowpass Filter）</strong></p>
+<p>截断$F(u,v)$中的频率处于指定距离$D_0$（截止频率）之外的所有高频成分。</p>
+<script type="math/tex; mode=display">
+H(u,v)=\left\{\begin{matrix}
+1 &if\ D(u,v)\leqslant D_0 \\ 
+ 0&if\ D(u,v)>D_0 
+\end{matrix}\right.</script><p>$D(u,v)$是点$(u,v)$距频率原点的距离，其中$D(u,v)=\sqrt{(u-M/2)^2+(v-N/2)^2}$ .</p>
+<p>因为中心化后，频域原点在频谱图的中心，所以中心点是常量也就是平均值，越往边上移动，频率就会越高。</p>
+<p><img src="2.png" style="zoom:45%;"></p>
+<p>振铃现象十分显著：</p>
+<p><img src="4.png" style="zoom:50%;"></p>
+<p>问题：如何确定截止频率？</p>
+<p>答：根据截止频率为半径的圆内所包含的功率值，来选择相应的截止频率。</p>
+<h4 id="巴特沃斯低通滤波器"><a href="#巴特沃斯低通滤波器" class="headerlink" title="巴特沃斯低通滤波器"></a><strong>巴特沃斯低通滤波器</strong></h4><p><strong>（Butterworth Lowpass Filter）</strong></p>
+<script type="math/tex; mode=display">H(u,v)=\frac{1}{1+[D(u,v)/D_0]^{2n}}</script><p>n代表滤波器阶数。当$D(u,v)=D_0$时，$H(u,v)=0.5$;</p>
+<p><img src="3.png" style="zoom: 60%;"></p>
+<p>二阶BLPF处于有效低通滤波和可接受的振铃特征之间：</p>
+<p><img src="5.png" style="zoom:50%;"></p>
+<h4 id="高斯低通滤波器"><a href="#高斯低通滤波器" class="headerlink" title="高斯低通滤波器"></a><strong>高斯低通滤波器</strong></h4><p><strong>（Gaussian Lowpass Filters）</strong></p>
+<script type="math/tex; mode=display">H(u,v)=e^{-D^2(u,v)/2D_0^2}</script><p>其中$D_0$为截止频率，当$D(u,v)=D_0$时，滤波器下降到其最大值的0.607处。无振铃现象，曲线如下：</p>
+<p><img src="6.png" style="zoom:44%;"></p>
+<h4 id="低通滤波器的应用实例"><a href="#低通滤波器的应用实例" class="headerlink" title="低通滤波器的应用实例"></a>低通滤波器的应用实例</h4><p>字符识别：通过模糊图像，桥接断裂字符的裂缝等；</p>
+<p>印刷和出版社：从一幅尖锐的原始图像产生平滑，柔和的外观，如人脸，减少皮肤细纹的锐化程度和小斑点；</p>
+<p>处理卫星和航空图像：尽可能模糊细节，而保留大的可识别特征。低通滤波器通过消除不重要的特征来简化感兴趣的特征的分析；</p>
+<p><img src="7.png" style="zoom:50%;"></p>
+<p><img src="8.png" style="zoom: 45%;"></p>
+<p><img src="9.png" style="zoom:50%;"></p>
+<h3 id="频率域锐化处理"><a href="#频率域锐化处理" class="headerlink" title="频率域锐化处理"></a>频率域锐化处理</h3><h4 id="IHPF-GHPF-BHPF"><a href="#IHPF-GHPF-BHPF" class="headerlink" title="IHPF,GHPF,BHPF"></a>IHPF,GHPF,BHPF</h4><p>高通滤波器可直接用上面的结论取反；</p>
+<p><img src="10.png" style="zoom:50%;"></p>
+<p><img src="12.png" style="zoom:50%;"></p>
+<p><img src="/Users/dongxuehui/Desktop/数字图像处理/note/DIP_ch03/11.png" alt></p>
+<h4 id="拉普拉斯算子"><a href="#拉普拉斯算子" class="headerlink" title="拉普拉斯算子"></a>拉普拉斯算子</h4><p>公式过程略，详情见教材相关内容；</p>
+<p><img src="13.png" style="zoom:50%;"></p>
+<p>效果图：</p>
+<p><img src="14.png" style="zoom:50%;"></p>
+<h4 id="高频增强滤波"><a href="#高频增强滤波" class="headerlink" title="高频增强滤波"></a>高频增强滤波</h4><p>高频增强滤波是在高通滤波器上再加一个常数使得低频信号也能过去实现的。</p>
+<p><img src="15.png" style="zoom:50%;"></p>
+<p>图一为原图；图二为高斯高通滤波后的结果；图三是图一和图二组合起来的结果；图四为直方图均衡化结果；</p>
+<h3 id="带通带阻滤波器"><a href="#带通带阻滤波器" class="headerlink" title="带通带阻滤波器"></a>带通带阻滤波器</h3><p><strong>带阻滤波器</strong></p>
+<p>阻止一定频率的信号（允许其他频率范围信号），旋转对称；</p>
+<p><img src="16.png" style="zoom:50%;"></p>
+<p><img src="17.png" style="zoom:50%;"></p>
+<p><strong>带通滤波器</strong></p>
+<p>在带阻滤波器基础上变换。</p>
+<h4 id="同态滤波器"><a href="#同态滤波器" class="headerlink" title="同态滤波器"></a>同态滤波器</h4><p><strong>频域滤波可以灵活地解决加性噪声问题，但无法消减乘性或卷积性噪声。</strong></p>
+<p>​        同态滤波器是在频域中同时压缩动态（灰度）范围并增强局部对比度，来实现图像增强的方法。</p>
+<p>​        为了分离加性组合的信号，常采用线性滤波的方法，而非加性信号组合常用同态滤波的技术将非线性问题转化成线性问题处理，即先对非线性（乘性或者卷积性）混杂信号作某种数学运算，变换成加性的。然后用线性滤波方法处理，最后作反变换运算,恢复处理后图像。</p>
+<p>假如在阳光灿烂的风景照中，由于底片的动态范围比较窄，照片中的对比度要降低很多。这个现象在亮区或者暗区尤其明显。</p>
+<p>照射反射模型,</p>
+<script type="math/tex; mode=display">
+f(x,y)=i(x,y)r(x,y)</script><p>一般假定入射光的动态范围很大并且变化缓慢，而反射光部分变化迅速，它确定了图的细节和局部的对比度。因此补救方法应该是减少$i(x,y)$并同时增加$r(x,y)$，</p>
+<p>因为乘积的傅里叶变换不是变换的乘积，</p>
+<script type="math/tex; mode=display">
+\mathfrak{F}[f(x,y)]\neq \mathfrak{F}[i(x,y)]\ \mathfrak{F}[r(x,y)]</script><p>对模型两边取对数，再变换，</p>
+<script type="math/tex; mode=display">
+\mathfrak{F}\{z(x,y)\}= \mathfrak{F}\{ln\ f(x,y)\}= \mathfrak{F}\{ln\ i(x,y)\}+\mathfrak{F}\{ln\ r(x,y)\}</script><p>而后步骤详情请见教材。</p>
+<p>同态滤波步骤小结：</p>
+<p><img src="18.png" style="zoom:50%;"></p>
+<p>一般来说，图片照射分量往往以空间域的慢变化为特征，而反射分量往往发生突变，尤其是在不同物体的连接部分。导致傅里叶变换： </p>
+<script type="math/tex; mode=display">
+H(u,v)\ \Leftrightarrow\  \xrightarrow[高频\rightarrow反射]{低频\rightarrow 照射}</script><p>函数形状可用稍微变形一下的高斯高通滤波器来近似；</p>
+<script type="math/tex; mode=display">
+D(u,v)=[(u-P/2)^2+(v-Q/2)^2]^{1/2}
+\\ \ 
+\\ \ 
+\\
+H(u,v)=(\gamma_H-\gamma_L)[1-e^{-c[D^2(u,v)/D_0^2]}]+\gamma_L</script><p>常数$C$控制函数坡度的锐利度，它在$\gamma_L$和$\gamma_H$之间过渡，$\gamma_L<1$而$\gamma_h>1$。下图为圆形对称的径向剖面图。</1$而$\gamma_h></p>
+<p><img src="19.png" style="zoom:50%;"></p>
+<h2 id="Matlab实现"><a href="#Matlab实现" class="headerlink" title="Matlab实现"></a>Matlab实现</h2><h4 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h4><p>中心化</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Y = fftshift(X)；<span class="comment">%通过将零频分量移动到数组中心，重新排列傅里叶变换 X。</span></span><br><span class="line"></span><br><span class="line">X = ifftshift(Y);<span class="comment">%去中心化</span></span><br></pre></td></tr></table></figure>
+<p>计算并可视化二维DFT</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Y = fft2(X);</span><br><span class="line">Y = fft2(X, m, n);<span class="comment">%表示函数将用0来填充原矩阵到m*n矩阵</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%例子，显示图像的频谱图</span></span><br><span class="line">F = fft2(f);        <span class="comment">%二维傅里叶变换</span></span><br><span class="line">Fc = fftshift(F);   <span class="comment">%中心化频谱图</span></span><br><span class="line">Sc = <span class="built_in">abs</span>(Fc);       <span class="comment">%取模</span></span><br><span class="line">S2 = <span class="built_in">log</span>(<span class="number">1</span> + Sc);   <span class="comment">%对数变换</span></span><br><span class="line">imshow(S2, []);     <span class="comment">%[]不能漏</span></span><br></pre></td></tr></table></figure>
+<p>傅里叶逆变换</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f = ifft2(F);</span><br><span class="line"><span class="comment">%说明，若用于计算F的输入f为实数，则理论上逆变换的结果也应该是实数，</span></span><br><span class="line"><span class="comment">%但是由于计算机的浮点运算的舍入误差，实际结果可能会有很小的虚部分量，</span></span><br><span class="line"><span class="comment">%因此，最好在计算逆变换提取结果实部.</span></span><br><span class="line">f = <span class="built_in">real</span>(ifft2(F));</span><br></pre></td></tr></table></figure>
+<p>空间滤波实际上和频域滤波是对等的，空间滤波的掩模是进行卷积运算，而频域滤波是进行乘法运算；实际上，空间卷积通常使用较小的掩模来简化，使用这种较小掩模的目的是尽可能的获得其频域对应内容的显著特征。</p>
+<p>值得注意的是：</p>
+<p><img src="20.png" style="zoom:50%;"></p>
+<p>用函数paddedsize可以用于计算满足前述等式P和Q的最小偶数值的运算。</p>
+<p>注意，在频域进行填充时，滤波器的大小必须为PQ(1) x PQ(2)。</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">PQ</span> = <span class="title">paddedsize</span><span class="params">(AB, CD, PARAM)</span></span></span><br><span class="line"><span class="comment">%PADDEDSIZE Computes padded sizes useful for FFT-based filtering. </span></span><br><span class="line"><span class="comment">%   PQ = PADDEDSIZE(AB), where AB is a two-element size vector,</span></span><br><span class="line"><span class="comment">%   computes the two-element size vector PQ = 2*AB.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   PQ = PADDEDSIZE(AB, 'PWR2') computes the vector PQ such that</span></span><br><span class="line"><span class="comment">%   PQ(1) = PQ(2) = 2^nextpow2(2*m), where m is MAX(AB).</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   PQ = PADDEDSIZE(AB, CD), where AB and CD are two-element size</span></span><br><span class="line"><span class="comment">%   vectors, computes the two-element size vector PQ.  The elements</span></span><br><span class="line"><span class="comment">%   of PQ are the smallest even integers greater than or equal to </span></span><br><span class="line"><span class="comment">%   AB + CD - 1.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   PQ = PADDEDSIZE(AB, CD, 'PWR2') computes the vector PQ such that</span></span><br><span class="line"><span class="comment">%   PQ(1) = PQ(2) = 2^nextpow2(2*m), where m is MAX([AB CD]). </span></span><br><span class="line"></span><br><span class="line"><span class="comment">%   Copyright 2002-2009 R. C. Gonzalez, R. E. Woods, and S. L. Eddins</span></span><br><span class="line"><span class="comment">%   From the book Digital Image Processing Using MATLAB, 2nd ed.,</span></span><br><span class="line"><span class="comment">%   Gatesmark Publishing, 2009.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   Book web site: http://www.imageprocessingplace.com</span></span><br><span class="line"><span class="comment">%   Publisher web site: http://www.gatesmark.com/DIPUM2e.htm</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> nargin == <span class="number">1</span></span><br><span class="line">   PQ  = <span class="number">2</span>*AB;</span><br><span class="line"><span class="keyword">elseif</span> nargin == <span class="number">2</span> &amp;&amp; ~ischar(CD)</span><br><span class="line">   PQ = AB + CD - <span class="number">1</span>;</span><br><span class="line">   PQ = <span class="number">2</span> * <span class="built_in">ceil</span>(PQ / <span class="number">2</span>);</span><br><span class="line"><span class="keyword">elseif</span> nargin == <span class="number">2</span></span><br><span class="line">   m = <span class="built_in">max</span>(AB); <span class="comment">% Maximum dimension.</span></span><br><span class="line">   </span><br><span class="line">   <span class="comment">% Find power-of-2 at least twice m.</span></span><br><span class="line">   P = <span class="number">2</span>^<span class="built_in">nextpow2</span>(<span class="number">2</span>*m);</span><br><span class="line">   PQ = [P, P];</span><br><span class="line"><span class="keyword">elseif</span> (nargin == <span class="number">3</span>) &amp;&amp; strcmpi(PARAM, <span class="string">'pwr2'</span>)</span><br><span class="line">   m = <span class="built_in">max</span>([AB CD]); <span class="comment">% Maximum dimension.</span></span><br><span class="line">   P = <span class="number">2</span>^<span class="built_in">nextpow2</span>(<span class="number">2</span>*m);</span><br><span class="line">   PQ = [P, P];</span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">   error(<span class="string">'Wrong number of inputs.'</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">%通过使用函数paddedsize计算后的PQ，然后再用fft2来计算经0填充后的FFT</span></span><br><span class="line">F = fft2(f, PQ(<span class="number">1</span>), PQ(<span class="number">2</span>));</span><br></pre></td></tr></table></figure>
+<p>DFT滤波基本步骤：</p>
+<p><img src="1.png" style="zoom:70%;"></p>
+<ol>
+<li><p>使用函数<code>paddesize</code>获得填充参数</p>
+<p><code>PQ = paddesize(size(f));</code></p>
+</li>
+<li><p>得到使用填充的傅里叶变换</p>
+<p><code>F = fft2(f, PQ(1), PQ(2));</code></p>
+</li>
+<li><p>使用本章讨论的任意一个方法，生成一个大小为$PQ(1)\times PQ(2)$的滤波函数$H$。该滤波函数的格式必须如下图b所示。另外，如果它若图a所示，则在使用该滤波器前，需要令<code>H = fftshift(H);</code></p>
+<p><img src="21.png" style="zoom:50%;"></p>
+</li>
+<li><p>将变换乘以滤波函数</p>
+<p><code>G = H.*F;</code></p>
+</li>
+<li><p>获得G的傅里叶逆变换实部</p>
+<p><code>g = real(ifft(G));</code></p>
+</li>
+<li><p>将左上部的矩形修建为原始尺寸大小</p>
+<p><code>g = g( 1:size(f, 1), 1:size(f, 2) );</code></p>
+</li>
+</ol>
+<p><strong>步骤567可以用以下的函数dftfilt()代替</strong></p>
+<p>一个用于频域滤波的M函数，输入一个图像和滤波函数，输出经滤波和剪切后的图像</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">g</span> = <span class="title">dftfilt</span><span class="params">(f, H, classout)</span></span></span><br><span class="line"><span class="comment">%DFTFILT Performs frequency domain filtering.</span></span><br><span class="line"><span class="comment">%   g = DFTFILT(f, H, CLASSOUT) filters f in the frequency domain</span></span><br><span class="line"><span class="comment">%   using the filter transfer function H. The output, g, is the</span></span><br><span class="line"><span class="comment">%   filtered image, which has the same size as f. </span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   Valid values of CLASSOUT are</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%	'original'	The ouput is of the same class as the input. </span></span><br><span class="line"><span class="comment">%               This is the default if CLASSOUT is not included</span></span><br><span class="line"><span class="comment">%               in the call.</span></span><br><span class="line"><span class="comment">%	'fltpoint'	The output is floating point of class single, unless</span></span><br><span class="line"><span class="comment">%               both f and H are of class double, in which case the</span></span><br><span class="line"><span class="comment">%               output also is of class double.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   DFTFILT automatically pads f to be the same size as H. Both f</span></span><br><span class="line"><span class="comment">%   and H must be real. In addition, H must be an uncentered,</span></span><br><span class="line"><span class="comment">%   circularly-symmetric filter function.  </span></span><br><span class="line"></span><br><span class="line"><span class="comment">%   Copyright 2002-2009 R. C. Gonzalez, R. E. Woods, and S. L. Eddins</span></span><br><span class="line"><span class="comment">%   From the book Digital Image Processing Using MATLAB, 2nd ed.,</span></span><br><span class="line"><span class="comment">%   Gatesmark Publishing, 2009.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   Book web site: http://www.imageprocessingplace.com</span></span><br><span class="line"><span class="comment">%   Publisher web site: http://www.gatesmark.com/DIPUM2e.htm</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Convert the input to floating point.</span></span><br><span class="line">[f, revertClass] = tofloat(f);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Obtain the FFT of the padded input.</span></span><br><span class="line">F = fft2(f, <span class="built_in">size</span>(H, <span class="number">1</span>), <span class="built_in">size</span>(H, <span class="number">2</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">% Perform filtering. </span></span><br><span class="line">g = ifft2(H.*F);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Crop to original size.</span></span><br><span class="line">g = g(<span class="number">1</span>:<span class="built_in">size</span>(f, <span class="number">1</span>), <span class="number">1</span>:<span class="built_in">size</span>(f, <span class="number">2</span>)); <span class="comment">% g is of class single here.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Convert the output to the same class as the input if so specified.</span></span><br><span class="line"><span class="keyword">if</span> nargin == <span class="number">2</span> || strcmp(classout, <span class="string">'original'</span>)</span><br><span class="line">   g = revertClass(g);</span><br><span class="line"><span class="keyword">elseif</span> strcmp(classout, <span class="string">'fltpoint'</span>) <span class="comment">% g is floating point already.</span></span><br><span class="line">   <span class="keyword">return</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">   error(<span class="string">'Undefined class for the output image.'</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>滤波器较小时，空间滤波较频域滤波更有效。而较大时，使用FFT的滤波比空间卷积则要快。</p>
+<p>如何将空间滤波器转换成频域滤波器，详情见Matlab版教材P89。</p>
+<p>使用dftuv函数计算每一点到矩阵原点的距离</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[U, V]</span> = <span class="title">dftuv</span><span class="params">(M, N)</span></span></span><br><span class="line"><span class="comment">%DFTUV Computes meshgrid frequency matrices.</span></span><br><span class="line"><span class="comment">%   [U, V] = DFTUV(M, N) computes meshgrid frequency matrices U and</span></span><br><span class="line"><span class="comment">%   V.  U and V are useful for computing frequency-domain filter</span></span><br><span class="line"><span class="comment">%   functions that can be used with DFTFILT.  U and V are both</span></span><br><span class="line"><span class="comment">%   M-by-N and of class single.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%   Copyright 2002-2009 R. C. Gonzalez, R. E. Woods, and S. L. Eddins</span></span><br><span class="line"><span class="comment">%   From the book Digital Image Processing Using MATLAB, 2nd ed.,</span></span><br><span class="line"><span class="comment">%   Gatesmark Publishing, 2009.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   Book web site: http://www.imageprocessingplace.com</span></span><br><span class="line"><span class="comment">%   Publisher web site: http://www.gatesmark.com/DIPUM2e.htm</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Set up range of variables.</span></span><br><span class="line">u = single(<span class="number">0</span>:(M - <span class="number">1</span>));</span><br><span class="line">v = single(<span class="number">0</span>:(N - <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">% Compute the indices for use in meshgrid.</span></span><br><span class="line">idx = <span class="built_in">find</span>(u &gt; M/<span class="number">2</span>);</span><br><span class="line">u(idx) = u(idx) - M;</span><br><span class="line">idy = <span class="built_in">find</span>(v &gt; N/<span class="number">2</span>);</span><br><span class="line">v(idy) = v(idy) - N;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Compute the meshgrid arrays. </span></span><br><span class="line">[V, U] = <span class="built_in">meshgrid</span>(v, u);</span><br><span class="line"></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">%使用dftuv，计算一个8*5大小矩阵每点距原点距离</span></span><br><span class="line">[U,V] = dftuv(<span class="number">8</span>, <span class="number">5</span>);</span><br><span class="line">D = U.^<span class="number">2</span> + V.^<span class="number">2</span>;</span><br><span class="line">D =</span><br><span class="line"></span><br><span class="line">  <span class="number">8</span>×<span class="number">5</span> single 矩阵</span><br><span class="line"></span><br><span class="line">     <span class="number">0</span>     <span class="number">1</span>     <span class="number">4</span>     <span class="number">4</span>     <span class="number">1</span></span><br><span class="line">     <span class="number">1</span>     <span class="number">2</span>     <span class="number">5</span>     <span class="number">5</span>     <span class="number">2</span></span><br><span class="line">     <span class="number">4</span>     <span class="number">5</span>     <span class="number">8</span>     <span class="number">8</span>     <span class="number">5</span></span><br><span class="line">     <span class="number">9</span>    <span class="number">10</span>    <span class="number">13</span>    <span class="number">13</span>    <span class="number">10</span></span><br><span class="line">    <span class="number">16</span>    <span class="number">17</span>    <span class="number">20</span>    <span class="number">20</span>    <span class="number">17</span></span><br><span class="line">     <span class="number">9</span>    <span class="number">10</span>    <span class="number">13</span>    <span class="number">13</span>    <span class="number">10</span></span><br><span class="line">     <span class="number">4</span>     <span class="number">5</span>     <span class="number">8</span>     <span class="number">8</span>     <span class="number">5</span></span><br><span class="line">     <span class="number">1</span>     <span class="number">2</span>     <span class="number">5</span>     <span class="number">5</span>     <span class="number">2</span></span><br><span class="line">fftshift(D);<span class="comment">%中心化</span></span><br><span class="line"><span class="built_in">ans</span> =</span><br><span class="line"></span><br><span class="line">  <span class="number">8</span>×<span class="number">5</span> single 矩阵</span><br><span class="line"></span><br><span class="line">    <span class="number">20</span>    <span class="number">17</span>    <span class="number">16</span>    <span class="number">17</span>    <span class="number">20</span></span><br><span class="line">    <span class="number">13</span>    <span class="number">10</span>     <span class="number">9</span>    <span class="number">10</span>    <span class="number">13</span></span><br><span class="line">     <span class="number">8</span>     <span class="number">5</span>     <span class="number">4</span>     <span class="number">5</span>     <span class="number">8</span></span><br><span class="line">     <span class="number">5</span>     <span class="number">2</span>     <span class="number">1</span>     <span class="number">2</span>     <span class="number">5</span></span><br><span class="line">     <span class="number">4</span>     <span class="number">1</span>     <span class="number">0</span>     <span class="number">1</span>     <span class="number">4</span></span><br><span class="line">     <span class="number">5</span>     <span class="number">2</span>     <span class="number">1</span>     <span class="number">2</span>     <span class="number">5</span></span><br><span class="line">     <span class="number">8</span>     <span class="number">5</span>     <span class="number">4</span>     <span class="number">5</span>     <span class="number">8</span></span><br><span class="line">    <span class="number">13</span>    <span class="number">10</span>     <span class="number">9</span>    <span class="number">10</span>    <span class="number">13</span></span><br></pre></td></tr></table></figure>
+<p>下面介绍可以传入dftfilt函数的所有滤波函数的封装：</p>
+<h4 id="平滑滤波器-低通滤波器lpfilter"><a href="#平滑滤波器-低通滤波器lpfilter" class="headerlink" title="平滑滤波器/低通滤波器lpfilter"></a>平滑滤波器/低通滤波器lpfilter</h4><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">H</span> = <span class="title">lpfilter</span><span class="params">(type, M, N, D0, n)</span></span></span><br><span class="line"><span class="comment">%LPFILTER Computes frequency domain lowpass filters.</span></span><br><span class="line"><span class="comment">%   H = LPFILTER(TYPE, M, N, D0, n) creates the transfer function of</span></span><br><span class="line"><span class="comment">%   a lowpass filter, H, of the specified TYPE and size (M-by-N). To</span></span><br><span class="line"><span class="comment">%   view the filter as an image or mesh plot, it should be centered</span></span><br><span class="line"><span class="comment">%   using H = fftshift(H). </span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   Valid values for TYPE, D0, and n are:</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   'ideal'    Ideal lowpass filter with cutoff frequency D0. n need</span></span><br><span class="line"><span class="comment">%              not be supplied.  D0 must be positive.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   'btw'      Butterworth lowpass filter of order n, and cutoff</span></span><br><span class="line"><span class="comment">%              D0.  The default value for n is 1.0.  D0 must be</span></span><br><span class="line"><span class="comment">%              positive.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   'gaussian' Gaussian lowpass filter with cutoff (standard</span></span><br><span class="line"><span class="comment">%              deviation) D0.  n need not be supplied.  D0 must be</span></span><br><span class="line"><span class="comment">%              positive.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%  H is of floating point class single. It is returned uncentered</span></span><br><span class="line"><span class="comment">%  for consistency with filtering function dftfilt. To view H as an</span></span><br><span class="line"><span class="comment">%  image or mesh plot, it should be centered using Hc = fftshift(H).</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%   Copyright 2002-2009 R. C. Gonzalez, R. E. Woods, and S. L. Eddins</span></span><br><span class="line"><span class="comment">%   From the book Digital Image Processing Using MATLAB, 2nd ed.,</span></span><br><span class="line"><span class="comment">%   Gatesmark Publishing, 2009.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   Book web site: http://www.imageprocessingplace.com</span></span><br><span class="line"><span class="comment">%   Publisher web site: http://www.gatesmark.com/DIPUM2e.htm</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Use function dftuv to set up the meshgrid arrays needed for</span></span><br><span class="line"><span class="comment">% computing the required distances. </span></span><br><span class="line">[U, V] = dftuv(M, N);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Compute the distances D(U, V).</span></span><br><span class="line">D = <span class="built_in">hypot</span>(U, V);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Begin filter computations.</span></span><br><span class="line"><span class="keyword">switch</span> <span class="built_in">type</span></span><br><span class="line"><span class="keyword">case</span> <span class="string">'ideal'</span></span><br><span class="line">   H = single(D &lt;= D0);</span><br><span class="line"><span class="keyword">case</span> <span class="string">'btw'</span></span><br><span class="line">   <span class="keyword">if</span> nargin == <span class="number">4</span></span><br><span class="line">      n = <span class="number">1</span>;	</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line">   H = <span class="number">1.</span>/(<span class="number">1</span> + (D./D0).^(<span class="number">2</span>*n));</span><br><span class="line"><span class="keyword">case</span> <span class="string">'gaussian'</span></span><br><span class="line">   H = <span class="built_in">exp</span>(-(D.^<span class="number">2</span>)./(<span class="number">2</span>*(D0^<span class="number">2</span>)));</span><br><span class="line"><span class="keyword">otherwise</span></span><br><span class="line">   error(<span class="string">'Unknown filter type.'</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>可视化滤波器函数</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%直接用mesh()函数即可</span></span><br><span class="line">mesh(H);</span><br><span class="line"><span class="comment">%若是M和N很大，则可以用一下形式</span></span><br><span class="line">mesh( H( <span class="number">1</span>:k:<span class="keyword">end</span> , <span class="number">1</span>:k:<span class="keyword">end</span> ) );</span><br><span class="line"></span><br><span class="line"><span class="comment">%其实四种绘制三维图的方式都可以</span></span><br><span class="line"><span class="comment">%surf(),mesh().contour3()(在此处效果不合适),waterfall()</span></span><br></pre></td></tr></table></figure>
+<h4 id="锐化滤波器-高通滤波器hpfilter"><a href="#锐化滤波器-高通滤波器hpfilter" class="headerlink" title="锐化滤波器/高通滤波器hpfilter"></a>锐化滤波器/高通滤波器hpfilter</h4><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">H</span> = <span class="title">hpfilter</span><span class="params">(type, M, N, D0, n)</span></span></span><br><span class="line"><span class="comment">%HPFILTER Computes frequency domain highpass filters.</span></span><br><span class="line"><span class="comment">%   H = HPFILTER(TYPE, M, N, D0, n) creates the transfer function of</span></span><br><span class="line"><span class="comment">%   a highpass filter, H, of the specified TYPE and size (M-by-N).</span></span><br><span class="line"><span class="comment">%   </span></span><br><span class="line"><span class="comment">%   Valid values for TYPE, D0, and n are: </span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   'ideal'    Ideal highpass filter with cutoff frequency D0.  n</span></span><br><span class="line"><span class="comment">%              need not be supplied. D0 must be positive.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   'btw'      Butterworth highpass filter of order n, and cutoff</span></span><br><span class="line"><span class="comment">%              D0.  The default value for n is 1.0. D0 must be</span></span><br><span class="line"><span class="comment">%              positive.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   'gaussian' Gaussian highpass filter with cutoff (standard</span></span><br><span class="line"><span class="comment">%              deviation) D0. n need not be supplied. D0 must be</span></span><br><span class="line"><span class="comment">%              positive.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%  H is of floating point class single. It is returned uncentered</span></span><br><span class="line"><span class="comment">%  for consistency with filtering function dftfilt. To view H as an</span></span><br><span class="line"><span class="comment">%  image or mesh plot, it should be centered using Hc = fftshift(H).</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%   Copyright 2002-2009 R. C. Gonzalez, R. E. Woods, and S. L. Eddins</span></span><br><span class="line"><span class="comment">%   From the book Digital Image Processing Using MATLAB, 2nd ed.,</span></span><br><span class="line"><span class="comment">%   Gatesmark Publishing, 2009.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   Book web site: http://www.imageprocessingplace.com</span></span><br><span class="line"><span class="comment">%   Publisher web site: http://www.gatesmark.com/DIPUM2e.htm</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% The transfer function Hhp of a highpass filter is 1 - Hlp, </span></span><br><span class="line"><span class="comment">% where Hlp is the transfer function of the corresponding lowpass </span></span><br><span class="line"><span class="comment">% filter.  Thus, we can use function lpfilter to generate highpass </span></span><br><span class="line"><span class="comment">% filters.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> nargin == <span class="number">4</span></span><br><span class="line">   n = <span class="number">1</span>; <span class="comment">% Default value of n.</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Generate highpass filter.</span></span><br><span class="line">Hlp = lpfilter(<span class="built_in">type</span>, M, N, D0, n);</span><br><span class="line">H = <span class="number">1</span> - Hlp;</span><br></pre></td></tr></table></figure>
+<h4 id="高频增强滤波器"><a href="#高频增强滤波器" class="headerlink" title="高频增强滤波器"></a>高频增强滤波器</h4><script type="math/tex; mode=display">
+H_{hfe}(u,v)=a+bH_{hp}(u,v)</script><p>a是偏移量，b是乘数，$H_{hp}(u,v)$是高通滤波器的传递函数；</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PO = paddedsize(<span class="built_in">size</span>(f));</span><br><span class="line">DO=<span class="number">0.05</span>*PQ(<span class="number">1</span>);</span><br><span class="line">HBW = hpfilter(<span class="string">'btw'</span>, PQ(<span class="number">1</span>), PQ(<span class="number">2</span>), DO, <span class="number">2</span>);</span><br><span class="line">H = <span class="number">0.5</span> + <span class="number">2</span>*HBW;</span><br><span class="line">gbw = dftfilt(f, HBW, <span class="string">'fltpoint'</span>); </span><br><span class="line">gbw = gscale(gbw);</span><br><span class="line">ghf = dftfilt(fl H, <span class="string">'fltpoint'</span>);</span><br><span class="line">ghf = gscale (ghf );</span><br><span class="line">ghe = histeq(ghf, <span class="number">256</span>);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dongxh.cn/2020/03/19/频域的图像增强/" data-id="ck9mjdp3k001q1glkzokq675q" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数字图像处理/">数字图像处理</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-空间域的图像增强" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/03/17/空间域的图像增强/" class="article-date">
@@ -307,7 +513,7 @@ g(m,n)=\left\{\begin{matrix}
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2020/03/17/空间域的图像增强/" data-id="ck9c9ft090019xzlkwg1vyo2h" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2020/03/17/空间域的图像增强/" data-id="ck9mjdp0l001e1glk3im4utgj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数字图像处理/">数字图像处理</a></li></ul>
@@ -419,7 +625,7 @@ g(m,n)=\left\{\begin{matrix}
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/" data-id="ck9c9fsx4000axzlkvh9c7mlg" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2020/03/16/数字图像处理基础与相关操作的matlab基础/" data-id="ck9mjdox5000a1glktnlh2l7a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数字图像处理/">数字图像处理</a></li></ul>
@@ -475,7 +681,7 @@ g(m,n)=\left\{\begin{matrix}
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2019/08/15/Skydiving-in-the-Skydive-Golden-Gate/" data-id="ck9c9fswz0009xzlkn8p75bvb" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2019/08/15/Skydiving-in-the-Skydive-Golden-Gate/" data-id="ck9mjdox200091glk2or188ee" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/life-record/">life record</a></li></ul>
@@ -525,7 +731,7 @@ g(m,n)=\left\{\begin{matrix}
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2019/03/29/Linux：远程登录让程序后台运行/" data-id="ck9c9fswb0006xzlkasj4nehn" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2019/03/29/Linux：远程登录让程序后台运行/" data-id="ck9mjdowl00061glky1yx8ekf" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -635,7 +841,7 @@ P^{-1}AP=B</script><p>则称$B$是$A$的相似矩阵，或者说$A$和$B$相似�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2019/03/24/线性代数知识回顾与重新理解/" data-id="ck9c9ftbx001vxzlk9tco8fl8" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2019/03/24/线性代数知识回顾与重新理解/" data-id="ck9mjdpen00201glkonsb3v7v" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linear-algebra/">linear algebra</a></li></ul>
@@ -685,7 +891,7 @@ P^{-1}AP=B</script><p>则称$B$是$A$的相似矩阵，或者说$A$和$B$相似�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dongxh.cn/2019/03/23/在linux中添加应用图标/" data-id="ck9c9fsw50004xzlkq5csyjfe" class="article-share-link">Share</a>
+      <a data-url="http://dongxh.cn/2019/03/23/在linux中添加应用图标/" data-id="ck9mjdowh00041glk2ewrsyqi" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -732,7 +938,7 @@ P^{-1}AP=B</script><p>则称$B$是$A$的相似矩阵，或者说$A$和$B$相似�
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/life-record/" style="font-size: 10px;">life record</a> <a href="/tags/linear-algebra/" style="font-size: 10px;">linear algebra</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/操作系统/" style="font-size: 20px;">操作系统</a> <a href="/tags/数字图像处理/" style="font-size: 20px;">数字图像处理</a>
+      <a href="/tags/life-record/" style="font-size: 10px;">life record</a> <a href="/tags/linear-algebra/" style="font-size: 10px;">linear algebra</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/操作系统/" style="font-size: 20px;">操作系统</a> <a href="/tags/数字图像处理/" style="font-size: 16.67px;">数字图像处理</a>
     </div>
   </div>
 
@@ -754,6 +960,10 @@ P^{-1}AP=B</script><p>则称$B$是$A$的相似矩阵，或者说$A$和$B$相似�
       <ul>
         
           <li>
+            <a href="/2020/04/30/OS-同步、通信与死锁（1）-并发进程/">OS--同步、通信与死锁（1）_并发进程</a>
+          </li>
+        
+          <li>
             <a href="/2020/04/23/OS-处理器管理（5）-处理器调度/">OS--处理器管理（5）_处理器调度</a>
           </li>
         
@@ -767,10 +977,6 @@ P^{-1}AP=B</script><p>则称$B$是$A$的相似矩阵，或者说$A$和$B$相似�
         
           <li>
             <a href="/2020/03/30/OS-处理器管理（1）-中断技术/">OS--处理器管理（2）_中断技术</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/28/OS-处理器管理（1）-处理器状态/">OS--处理器管理（1）_处理器状态</a>
           </li>
         
       </ul>

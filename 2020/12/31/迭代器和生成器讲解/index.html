@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+
+  
+  <title>迭代器和生成器讲解 | DongXuehui&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="迭代器和生成器讲解深入浅出地讲一下生成器和迭代器； 迭代器协议 迭代器协议就是指：对象需要提供next方法，它要么返回迭代中的下一项，要么就引起一个StopIteration异常，以终止迭代； 可迭代对象就是：实现了迭代器协议的对象 协议是一种约定，可迭代对象实现迭代协议，python内置工具（如for循环，min，max，sum函数等）通过协议访问对象。  举个例子，python中for循环不仅">
+<meta name="keywords" content="python3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="迭代器和生成器讲解">
+<meta property="og:url" content="http://dongxh.cn/2020/12/31/迭代器和生成器讲解/index.html">
+<meta property="og:site_name" content="DongXuehui&#39;s Blog">
+<meta property="og:description" content="迭代器和生成器讲解深入浅出地讲一下生成器和迭代器； 迭代器协议 迭代器协议就是指：对象需要提供next方法，它要么返回迭代中的下一项，要么就引起一个StopIteration异常，以终止迭代； 可迭代对象就是：实现了迭代器协议的对象 协议是一种约定，可迭代对象实现迭代协议，python内置工具（如for循环，min，max，sum函数等）通过协议访问对象。  举个例子，python中for循环不仅">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-12-31T09:01:11.352Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="迭代器和生成器讲解">
+<meta name="twitter:description" content="迭代器和生成器讲解深入浅出地讲一下生成器和迭代器； 迭代器协议 迭代器协议就是指：对象需要提供next方法，它要么返回迭代中的下一项，要么就引起一个StopIteration异常，以终止迭代； 可迭代对象就是：实现了迭代器协议的对象 协议是一种约定，可迭代对象实现迭代协议，python内置工具（如for循环，min，max，sum函数等）通过协议访问对象。  举个例子，python中for循环不仅">
+  
+    <link rel="alternate" href="/atom.xml" title="DongXuehui&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">DongXuehui&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://dongxh.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-迭代器和生成器讲解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/31/迭代器和生成器讲解/" class="article-date">
+  <time datetime="2020-12-31T08:47:35.000Z" itemprop="datePublished">2020-12-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      迭代器和生成器讲解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="迭代器和生成器讲解"><a href="#迭代器和生成器讲解" class="headerlink" title="迭代器和生成器讲解"></a>迭代器和生成器讲解</h1><p>深入浅出地讲一下生成器和迭代器；</p>
+<h2 id="迭代器协议"><a href="#迭代器协议" class="headerlink" title="迭代器协议"></a>迭代器协议</h2><ol>
+<li>迭代器协议就是指：对象需要提供next方法，它要么返回迭代中的下一项，要么就引起一个StopIteration异常，以终止迭代；</li>
+<li>可迭代对象就是：实现了迭代器协议的对象</li>
+<li>协议是一种约定，可迭代对象实现迭代协议，python内置工具（如for循环，min，max，sum函数等）通过协议访问对象。</li>
+</ol>
+<p>举个例子，python中for循环不仅能来遍历列表，还能用来遍历各种各样的对象，这是因为能够遍历各种各样的对象实现了迭代器协议，for循环并不知道他遍历的对象是个什么东西，它只要管用利用迭代器协议访问遍历对象即可。（列表是可迭代对象，整数不是）</p>
+<h2 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h2><p>python使用生成器对延时操作进行了很好的支持。所谓延时操作，指的是在需要的时候产生结果，而不是立即产生结果。</p>
+<p>python有两种不同的方式提供生成器：</p>
+<ol>
+<li>生成器函数：常规函数定义，但是，使用yield语句而不是return语句返回结果。yield语句一次返回一个结果，在每个结果中间，挂起函数的状态，以便下次从它离开的地方继续执行。</li>
+<li>生成器表达式：类似于列表推导，但是，生成器返回按需产生结果的一个对象，而不是一次构建一个结果列表</li>
+</ol>
+<p>举两个例子：</p>
+<p>1.使用生成器函数返回自然数平方：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gensquares</span><span class="params">(N)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">        <span class="keyword">yield</span> i ** <span class="number">2</span>  <span class="comment"># 因为使用的是生成器，所以for循环语句中可以直接</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> gensquares(<span class="number">5</span>):<span class="comment"># 根据上面生成器延时操作理解，并不是一次性执行完gensquares(5)</span></span><br><span class="line">    print(item,end=<span class="string">' '</span>)   <span class="comment"># 而是利用yield语句的功能，生成一个 -&gt; 遍历一个 -&gt; 输出一个</span></span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">4</span> <span class="number">9</span> <span class="number">16</span></span><br></pre></td></tr></table></figure>
+<p>2.使用普通函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gensquares</span><span class="params">(N)</span>:</span></span><br><span class="line">    res = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">        res.append(i**<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> gensquares(<span class="number">5</span>):<span class="comment"># 返回了一个列表（也含有迭代器协议，可以用for循环遍历）</span></span><br><span class="line">    print(item, end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">4</span> <span class="number">9</span> <span class="number">16</span></span><br></pre></td></tr></table></figure>
+<p>3.错误例子示范（将1中yield换成return）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gensquares</span><span class="params">(N)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">        <span class="keyword">return</span> i ** <span class="number">2</span>  <span class="comment"># 将yield换成return</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> gensquares(<span class="number">5</span>):</span><br><span class="line">    print(item,end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">     <span class="keyword">for</span> item <span class="keyword">in</span> gensquares(<span class="number">5</span>):</span><br><span class="line">TypeError: <span class="string">'int'</span> object <span class="keyword">is</span> <span class="keyword">not</span> iterable</span><br></pre></td></tr></table></figure>
+<p>4.生成器表达式：</p>
+<p>使用列表推导，会一次性产生所有结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares = [x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares</span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>]</span><br></pre></td></tr></table></figure>
+<p>将列表推导的中括号[]，换成小括号()，就是一个生成器表达式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares = (x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0x7ff64f9810b0</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(squares)</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(squares)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(squares)</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(squares)</span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(squares)</span><br><span class="line"><span class="number">16</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(squares)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">StopIteration</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(squares)</span><br><span class="line">[]</span><br></pre></td></tr></table></figure>
+<p>顺便说一句list函数，对字符串可以转化为列表，对元组也可以转化为列表，对生成器则是将还未生成的剩下的数打包成列表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares = (x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(squares)</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(squares)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(squares)</span><br><span class="line">[<span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>]</span><br></pre></td></tr></table></figure>
+<p>================</p>
+<p>python不只是在for循环里面使用迭代器协议，大部分的内置函数，也是使用迭代器协议访问对象的。例如，sum函数，该函数使用迭代器协议访问对象，而生成器实现了迭代器协议，所以可以用生成器表达式计算：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum(x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+<p>而不用先构造一个列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum([x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">4</span>)])</span><br></pre></td></tr></table></figure>
+<p>插一嘴，range和xrange的区别就不多说了，python3里面已经去掉了xrange，全部用range代替</p>
+<p>===============</p>
+<h2 id="总结生成器"><a href="#总结生成器" class="headerlink" title="总结生成器"></a>总结生成器</h2><ol>
+<li>语法上和函数类似：生成器函数和常规函数几乎是一样的。它们都是用def语句定义，差别在于生成器使用yield语句返回一个值，而常规函数使用return语句返回一个值</li>
+<li>自动实现迭代器协议：对于生成器，python会自动实现迭代器协议，以便应用到迭代背景中。由于生成器自动实现了迭代器协议，所以，我们可以调用它的next方法，并且，在没有值可以返回的时候，生成器自动产生StopIteration异常</li>
+<li>状态挂起：生成器使用yield语句返回一个值。yield语句挂起该生成器函数的状态，保留足够的信息，以便之后从它离开的地方继续执行下一行</li>
+</ol>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li>生成器只能遍历一次</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dongxh.cn/2020/12/31/迭代器和生成器讲解/" data-id="ckjcmdb8d000k03lkx4dv50aq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python3/">python3</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/04/30/OS-同步、通信与死锁（1）-并发进程/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">OS--同步、通信与死锁（1）_并发进程</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Digital-Image-Process/">Digital Image Process</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/life-record/">life record</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linear-algebra/">linear algebra</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/life-record/">life record</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linear-algebra/">linear algebra</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python3/">python3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字图像处理/">数字图像处理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/life-record/" style="font-size: 10px;">life record</a> <a href="/tags/linear-algebra/" style="font-size: 10px;">linear algebra</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/python3/" style="font-size: 10px;">python3</a> <a href="/tags/操作系统/" style="font-size: 20px;">操作系统</a> <a href="/tags/数字图像处理/" style="font-size: 16.67px;">数字图像处理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/12/31/迭代器和生成器讲解/">迭代器和生成器讲解</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/30/OS-同步、通信与死锁（1）-并发进程/">OS--同步、通信与死锁（1）_并发进程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/23/OS-处理器管理（5）-处理器调度/">OS--处理器管理（5）_处理器调度</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/03/OS-处理器管理（4）-线程及其实现/">OS--处理器管理（4）_线程及其实现</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/02/OS-处理器管理（3）-进程及其实现/">OS--处理器管理（3）_进程及其实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 dwyane_dongxh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>
